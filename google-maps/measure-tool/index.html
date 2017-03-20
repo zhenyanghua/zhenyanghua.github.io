@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MeasureTool Demo</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+
+    #instructions {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      margin: 10px;
+      background-color: antiquewhite;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="instructions">
+  <a href="https://github.com/zhenyanghua/MeasureTool-GoogleMaps-V3">
+    <h3>Visit Project Page</h3>
+  </a>
+  <ul>
+    <li>To start measuring, right click a map and choose measure distance.</li>
+    <li>To end measuring, right click a map and choose clear measurement.</li>
+    <li>To add a way point, click on the map.</li>
+    <li>To remove a way point, click on the waypoint (the first point can not be removed).</li>
+    <li>To insert a way point, hover on the line and drag it.</li>
+    <li>When the first point and the last point are close enough, the area will show.</li>
+  </ul>
+</div>
+<script src="./MeasureTool.min.js"></script>
+<script>
+  var map, measureTool;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8,
+      scaleControl: true
+    });
+    measureTool = new MeasureTool(map, {
+      showSegmentLength: true,
+      unit: MeasureTool.UnitTypeId.IMPERIAL
+    });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTdH3AFSWLD3SrgbNqTGoRsg3U6W0qAAg&libraries=geometry&callback=initMap"
+        async defer></script>
+
+</body>
+</html>
