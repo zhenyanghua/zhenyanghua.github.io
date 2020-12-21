@@ -1,0 +1,82 @@
+#headcontainer {
+  background-image: url("/img/header-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 76px;
+  height: 333px;
+}
+
+#headcontainer header {
+  height: 100%;
+  display: grid;
+  grid-template-areas:
+    "sitename nav"
+    ". intro";
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 200px 1fr;
+}
+
+#headcontainer header h2 {
+  grid-area: sitename;
+  justify-self: end;
+  align-self: center;
+}
+
+#headcontainer header nav {
+  grid-area: nav;
+  justify-self: end;
+  align-self: center;
+}
+
+#headcontainer header nav ul {
+  display: flex;
+  list-style-type: none;
+  font-size: 1.6rem;
+  text-transform: capitalize;
+  margin-right: 60px;
+}
+
+#headcontainer header nav li {
+  margin: 0 10px;
+}
+
+#intro {
+  grid-area: intro;
+  background-color: white;
+  max-width: 375px;
+  justify-self: end;
+  align-self: center;
+  margin: 0 60px 0 0;
+  font-size: 1.2rem;
+  box-sizing: border-box;
+  padding: 1.2rem 1rem;
+  height: 250px;
+}
+
+#skiptocontent a {
+  padding: 6px;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  color: white;
+  border-right: 1px solid white;
+  border-bottom: 1px solid white;
+  border-bottom-right-radius: 8px;
+  background: #BF1722;
+  -webkit-transition: top 1s ease-out;
+  transition: top 1s ease-out;
+  z-index: 100;
+}
+
+#skiptocontent a:focus {
+  position: absolute;
+  left: 0;
+  top: 0;
+  outline-color: transparent;
+  -webkit-transition: top .1s ease-in;
+  transition: top .1s ease-in;
+}
+
+#maincontent {
+  margin: 0 auto;
+  max-width: 1280px;
+}
