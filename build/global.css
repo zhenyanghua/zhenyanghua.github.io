@@ -15,15 +15,6 @@ body {
   margin: 0 auto;
 }
 
-.hidden {
-  position: absolute;
-  left: 0;
-  top: -500px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
 .shadow {
   box-shadow: 0 0 8px 3px rgba(0,0,0,0.20);
 }
