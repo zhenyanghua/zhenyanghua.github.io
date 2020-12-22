@@ -9,10 +9,10 @@ const isDev = !!process.env.ROLLUP_WATCH;
 // Static assets will vary depending on the application
 const copyConfig = {
   targets: [
-    { src: 'node_modules/@webcomponents', dest: 'build-modern/node_modules' },
-    { src: 'img', dest: 'build' },
-    { src: 'data', dest: 'build' },
-    { src: 'public/*', dest: 'build' },
+    { src: 'node_modules/@webcomponents', dest: 'docs/node_modules' },
+    { src: 'img', dest: 'docs' },
+    { src: 'data', dest: 'docs' },
+    { src: 'public/*', dest: 'docs' },
   ],
 };
 
@@ -21,7 +21,7 @@ const copyConfig = {
 const config = {
   input: 'src/main.js',
   output: {
-    file: 'build/bundle.js',
+    file: 'docs/bundle.js',
     format: 'es',
     sourcemap: isDev
   },
@@ -29,7 +29,7 @@ const config = {
     minifyHTML(),
     copy(copyConfig),
     resolve(),
-    del({ targets: 'build', runOnce: isDev })
+    del({ targets: 'docs', runOnce: isDev })
   ],
   preserveEntrySignatures: false,
 };
