@@ -18,15 +18,26 @@
   display: grid;
   grid-template-areas:
     "sitename nav"
-    ". intro";
+    "intro intro";
   grid-template-rows: 60px 1fr;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns:  auto 1fr;
+}
+
+@media (min-width: 768px) {
+  #headcontainer header {
+    grid-template-areas:
+      "sitename nav"
+      ". intro";
+    grid-template-rows: 60px 1fr;
+    grid-template-columns: 200px 1fr;
+  }
 }
 
 #headcontainer header h2 {
   grid-area: sitename;
   justify-self: end;
   align-self: center;
+  padding-left: 10px;
 }
 
 #headcontainer header nav {
@@ -38,9 +49,15 @@
 #headcontainer header nav ul {
   display: flex;
   list-style-type: none;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   text-transform: capitalize;
-  margin-right: 60px;
+  padding-inline-start: 0;
+}
+
+@media (min-width: 768px) {
+  #headcontainer header nav ul {
+    margin-right: 60px;
+  }
 }
 
 #headcontainer header nav li {
@@ -49,21 +66,29 @@
 
 #intro {
   grid-area: intro;
-  background-color: white;
-  max-width: 375px;
-  justify-self: end;
+  background-color: rgba(255, 255, 255, 0.9);
+  max-width: 320px;
+  text-align: center;
   align-self: center;
-  margin: 0 60px 0 0;
   font-size: 1.2rem;
   box-sizing: border-box;
   height: 250px;
   display: flex;
+  justify-self: center;
   align-items: center;
   --leaf-variance: around;
-  --leaf-size: 16;
+  --leaf-size: 14;
   --leaf-color: #73CE8F;
   background-image: paint(leaf);
   padding: calc(var(--leaf-size) * 4px);
+}
+
+@media (min-width: 768px) {
+  #intro {
+    justify-self: end;
+    margin: 0 60px 0 0;
+    --leaf-size: 16;
+  }
 }
 
 #skiptocontent a {
