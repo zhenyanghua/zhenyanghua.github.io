@@ -56,8 +56,14 @@
   margin: 0 60px 0 0;
   font-size: 1.2rem;
   box-sizing: border-box;
-  padding: 1.2rem 1rem;
   height: 250px;
+  display: flex;
+  align-items: center;
+  --leaf-variance: around;
+  --leaf-size: 16;
+  --leaf-color: #73CE8F;
+  background-image: paint(leaf);
+  padding: calc(var(--leaf-size) * 4px);
 }
 
 #skiptocontent a {
