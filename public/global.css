@@ -1,0 +1,27 @@
+html, body {
+  margin: 0;
+  width: 100%;
+}
+* {
+  font-family: 'EB Garamond', serif;
+  color: black;
+}
+
+a:hover {
+  color: #BF1722;
+}
+
+body {
+  margin: 0 auto;
+}
+
+.shadow {
+  box-shadow: 0 0 8px 3px rgba(0,0,0,0.20);
+}
+
+@media (min-width: 1280px) {
+  #contentcontainer {
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+}
