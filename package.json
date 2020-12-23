@@ -28,6 +28,7 @@
     "serve": "^11.3.2"
   },
   "dependencies": {
+    "effect-snow": "^1.0.5",
     "lit-element": "^2.4.0"
   }
 }

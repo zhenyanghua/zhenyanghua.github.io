@@ -38,15 +38,15 @@ class NavElement extends LitElement {
       <nav>
         <h2 class="hidden">Main Navigation</h2>
         <ul>
-          <li>
-            <a href="/libraries">libraries</a>
-          </li>
-          <li>
-            <a href="/me">me</a>
-          </li>
-          <li>
-            <a href="/site">site</a>
-          </li>
+<!--          <li>-->
+<!--            <a href="/libraries">libraries</a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="/me">me</a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="/site">site</a>-->
+<!--          </li>-->
         </ul>
       </nav>
     `;
