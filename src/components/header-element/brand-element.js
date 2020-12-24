@@ -17,7 +17,7 @@ class BrandElement extends LitElement {
     return html`
       <h2>
         <a href="/">
-          Zhenyang's Space
+          Zhenyang Hua
         </a>
       </h2>
     `;
