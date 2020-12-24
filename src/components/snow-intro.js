@@ -3,12 +3,12 @@ import Snow from 'effect-snow';
 import {button} from "../styles";
 
 const codeText = `
-// Create a snow scene instance and 
+// Create a snow scene instance and
 // mount it to the container element
 const snow = new Snow(containerElement);
 // To start
 snow.start();
-// To stop 
+// To stop
 snow.stop();
 `;
 
@@ -32,11 +32,11 @@ class SnowIntro extends LitElement {
           background-color: rgb(1 54 64) !important;
           font-size: 1.2rem !important;
         }
-        
+
         p {
           font-size: 1.2rem;
         }
-        
+
         a {
           background-color: white;
           color: rgb(1 54 64);
@@ -58,7 +58,7 @@ class SnowIntro extends LitElement {
       <link rel="stylesheet" href="prism-dark.css">
       <div id="snowbox">
         <div>
-          <h1>Like this effect?</h1>
+          <h2>Like this effect?</h2>
           <p>
             Try the <a target="_blank" href="https://github.com/zhenyanghua/effects">effect-snow</a> in your site with
             three lines of code
