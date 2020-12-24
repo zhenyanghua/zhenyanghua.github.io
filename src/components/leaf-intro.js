@@ -46,7 +46,7 @@ class LeafIntro extends LitElement {
           </div>
         </div>
         <div class="slider">
-          <input type="range" min="10" max="50" id="size" name="size" value="24">
+          <input type="range" min="10" max="50" id="size" name="size" value="24" @change="${e => this.style.setProperty('--leaf-size', e.target.value)}">
           <label for="size"><code>--leaf-size</code></label>
         </div>
         <div class="color">
