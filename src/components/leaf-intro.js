@@ -68,7 +68,7 @@ class LeafIntro extends LitElement {
           </a>
         </h2>
         <p>
-          Leaf effect is a decorative border that uses CSS Houdini Paint API to bring special effect through background image or any where an image could be used. Try it out without javascript!
+          Leaf effect is a decorative border that uses CSS Houdini Paint API to bring special effect through background image or any where an image could be used. Try it out without writing any JavaScript!
         </p>
         <div class="controls">
           <div class="control radio-group">
