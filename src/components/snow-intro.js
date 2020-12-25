@@ -1,6 +1,6 @@
 import {LitElement, css, html} from "lit-element";
 import Snow from 'effect-snow';
-import {button} from "../styles";
+import { all } from "../styles";
 
 const codeText = `
 // Create a snow scene instance and
@@ -15,20 +15,38 @@ snow.stop();
 class SnowIntro extends LitElement {
   static get styles() {
     return [
-      button,
+      ...all,
       css`
-        #snowbox {
-          display: flex;
-          flex-wrap: wrap;
+        :host {
+          display: block;
           background-color: rgb(1 54 64);
         }
 
-        #snowbox > * {
-          flex: 1 1 auto;
+        #snowbox {
+          padding: 20px;
+        }
+
+        #snowbox > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        h2 {
+          margin-top: 44px !important;
+        }
+
+        .button-group {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 96px;
         }
 
         pre {
           margin: 0 !important;
+          padding: 0 !important;
           background-color: rgb(1 54 64) !important;
           font-size: 1.2rem !important;
         }
@@ -37,17 +55,15 @@ class SnowIntro extends LitElement {
           font-size: 1.2rem;
         }
 
-        a {
-          background-color: white;
-          color: rgb(1 54 64);
-          border-radius: 4px;
-          padding: 0 4px;
-          font-size: 1.1rem;
-          font-family: "Roboto", Arial, SansSerif, sans-serif !important;
+        a, p {
+          color: white !important;
         }
 
-        * {
-          color: white;
+        @media (min-width: 462px) {
+          pre {
+            display: flex;
+            justify-content: center;
+          }
         }
       `
     ];
@@ -58,13 +74,19 @@ class SnowIntro extends LitElement {
       <link rel="stylesheet" href="prism-dark.css">
       <div id="snowbox">
         <div>
-          <h2>Like this effect?</h2>
+          <h2>
+            <a target="_blank" href="https://github.com/zhenyanghua/effects/tree/main/snow">
+              Snow Effect Overlay
+            </a>
+          </h2>
           <p>
-            Try the <a target="_blank" href="https://github.com/zhenyanghua/effects">effect-snow</a> in your site with
+            Try the snow effect in your site with
             three lines of code
           </p>
-          <button class="inverted" @click="${this._startSnow}">start the snow</button>
-          <button class="inverted" @click="${this._stopSnow}">stop the snow</button>
+          <div class="button-group">
+            <button class="inverted" @click="${this._startSnow}">start the snow</button>
+            <button class="inverted" @click="${this._stopSnow}">stop the snow</button>
+          </div>
         </div>
         <pre>
           <code class="lang-js">${codeText}</code>

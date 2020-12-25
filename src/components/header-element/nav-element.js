@@ -1,9 +1,10 @@
 import {LitElement, css, html} from 'lit-element';
-import {hidden} from "../../styles";
+import { all, hidden } from "../../styles";
 
 class NavElement extends LitElement {
   static get styles() {
     return [
+      ...all,
       hidden,
       css`
         :host {
@@ -44,9 +45,9 @@ class NavElement extends LitElement {
 <!--          <li>-->
 <!--            <a href="/me">me</a>-->
 <!--          </li>-->
-<!--          <li>-->
-<!--            <a href="/site">site</a>-->
-<!--          </li>-->
+          <li>
+            <a target="_blank" href="https://www.leafyjava.com">LeafyJava</a>
+          </li>
         </ul>
       </nav>
     `;
