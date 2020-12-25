@@ -1,16 +1,24 @@
 import { LitElement, css, html } from "lit-element";
+import { all } from "../../styles";
 
 class BrandElement extends LitElement {
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        grid-area: brand;
-        justify-self: end;
-        align-self: center;
-        padding-left: 10px;
-      }
-    `;
+    return [
+      ...all,
+      css`
+        :host {
+          display: block;
+          grid-area: brand;
+          justify-self: end;
+          align-self: center;
+          padding-left: 10px;
+        }
+
+        h2 {
+          font-family: "Roboto", Arial, SansSerif, sans-serif;
+        }
+      `
+    ];
   }
 
   render() {

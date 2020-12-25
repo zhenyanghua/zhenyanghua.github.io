@@ -7,10 +7,6 @@ html, body {
   color: black;
 }
 
-a:hover {
-  color: #BF1722;
-}
-
 body {
   margin: 0 auto;
 }

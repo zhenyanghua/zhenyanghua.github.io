@@ -1,5 +1,6 @@
 import './components/header-element/header-element';
 import './components/snow-intro';
+import './components/leaf-intro';
 
 (async function () {
     if (!('paintWorklet' in CSS)) {
