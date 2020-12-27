@@ -2,6 +2,7 @@
   "name": "zhenyanghua.github.io",
   "version": "1.0.0",
   "private": "true",
+  "type": "module",
   "scripts": {
     "start": "wmr",
     "build": "wmr build",
@@ -12,6 +13,8 @@
     "wmr": "^1.0.0"
   },
   "dependencies": {
-    "effect-snow": "^1.0.7"
+    "css-paint-polyfill": "^2.0.0",
+    "effect-snow": "^1.0.7",
+    "houdini-leaf": "^1.0.6"
   }
 }

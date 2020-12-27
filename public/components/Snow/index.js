@@ -1,6 +1,5 @@
 import style from './style.module.css';
 import { useEffect, useRef } from 'preact/hooks';
-import SnowFall from 'effect-snow'
 
 const codeText = `
 // Create a snow scene instance and
@@ -39,8 +38,10 @@ export default function Snow() {
   useEffect(() => {
     // snow fall
     if (snowBox.current) {
-      snow.current = new SnowFall(snowBox.current);
-      startSnow();
+      import('effect-snow').then(({default: SnowFall}) => {
+        snow.current = new SnowFall(snowBox.current);
+        // startSnow();
+      })
     }
 
     return () => {

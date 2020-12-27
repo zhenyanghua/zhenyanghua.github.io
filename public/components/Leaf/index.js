@@ -5,12 +5,6 @@ const htmlText = `
 <!-- html -->
 <script src="https://unpkg.com/houdini-leaf"></script>`;
 
-const codeText = `
-/* CSS */
-.element {
-  background-image: paint(leaf);
-}`;
-
 export default function Leaf() {
   const [variance, setVariance] = useState('left');
   const [size, setSize] = useState(12);
@@ -69,7 +63,14 @@ export default function Leaf() {
       <codeblock-light>
         <pre>
           <code className="lang-html">{htmlText}</code>
-          <code className="lang-css">{codeText}</code>
+          <code className="lang-css">{`
+/* CSS */
+.element {
+  --leaf-variance: ${variance};
+  --leaf-size: ${size};
+  --leaf-color: ${color};
+  background-image: paint(leaf);
+}`}</code>
         </pre>
       </codeblock-light>
     </div>

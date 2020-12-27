@@ -36,7 +36,8 @@
   font-size: 1.2rem;
 }
 
-.host a, p {
+.host a,
+.host p {
   color: white !important;
 }
 
