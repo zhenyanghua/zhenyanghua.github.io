@@ -25,13 +25,6 @@
   height: 96px;
 }
 
-.host pre {
-  margin: 0 !important;
-  padding: 0 !important;
-  background-color: var(--deepBlue) !important;
-  font-size: 1.2rem !important;
-}
-
 .host p {
   font-size: 1.2rem;
 }
@@ -39,11 +32,4 @@
 .host a,
 .host p {
   color: white !important;
-}
-
-@media (min-width: 462px) {
-  .host pre {
-    display: flex !important;
-    justify-content: center !important;
-  }
 }
