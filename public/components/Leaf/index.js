@@ -62,8 +62,8 @@ export default function Leaf() {
       </div>
       <codeblock-light>
         <pre>
-          <code className="lang-html">{htmlText}</code>
-          <code className="lang-css">{`
+          <code class="lang-html">{htmlText}</code>
+          <code class="lang-css">{`
 /* CSS */
 .element {
   --leaf-variance: ${variance};

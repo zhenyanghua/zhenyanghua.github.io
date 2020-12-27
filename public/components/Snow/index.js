@@ -11,6 +11,22 @@ snow.start();
 snow.stop();
 `;
 
+const codeStyles = `
+pre {
+  contain: content;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: var(--deepBlue) !important;
+  font-size: 1.2rem !important;
+}
+
+@media (min-width: 462px) {
+  pre {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}`
+
 export default function Snow() {
   const snowBox = useRef(null);
   const snow = useRef(null);
@@ -68,8 +84,9 @@ export default function Snow() {
           </div>
         </div>
         <codeblock-dark>
+          <style>{codeStyles}</style>
           <pre>
-            <code className="lang-js">{codeText}</code>
+            <code class="lang-js">{codeText}</code>
           </pre>
         </codeblock-dark>
       </div>

@@ -42,10 +42,14 @@
       // to the shadow dom before prism generates them.
       const codeblock = this.shadowRoot.querySelector('.codeblock');
       codeblock.innerHTML = '';
-      slot.assignedNodes().forEach(node => {
+      for(const node of slot.assignedNodes()) {
         codeblock.appendChild(node.cloneNode(true));
-      });
-      codeblock.childNodes.forEach(node => Prism.highlightAllUnder(node));
+      }
+      for(const node of codeblock.childNodes) {
+        if (node.nodeName === 'PRE') {
+          Prism.highlightAllUnder(node);
+        }
+      }
     }
 
     connectedCallback() {
