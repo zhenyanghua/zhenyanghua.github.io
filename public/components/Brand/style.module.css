@@ -1,0 +1,11 @@
+.host {
+  display: block;
+  grid-area: brand;
+  justify-self: end;
+  align-self: center;
+  padding-left: 10px;
+}
+
+h2 {
+  font-family: "Roboto", Arial, SansSerif, sans-serif;
+}

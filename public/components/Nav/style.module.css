@@ -1,0 +1,23 @@
+.host {
+  grid-area: nav;
+  justify-self: end;
+  align-self: center;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+  padding-inline-start: 0;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+@media (min-width: 768px) {
+  nav ul {
+    margin-right: 60px;
+  }
+}
