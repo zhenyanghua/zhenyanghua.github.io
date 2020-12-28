@@ -21,7 +21,7 @@ export default function Leaf() {
   }
 
   return (
-    <div class={style.host} style={leafStyle}>
+    <section class={style.host} style={leafStyle}>
       <div>
         <h2>
           <a target="_blank" href="https://github.com/zhenyanghua/houdini/tree/master/leaf">
@@ -73,6 +73,6 @@ export default function Leaf() {
 }`}</code>
         </pre>
       </codeblock-light>
-    </div>
+    </section>
   );
 }

@@ -87,7 +87,7 @@ export default function Snow() {
   }, []);
 
   return (
-    <div class={style.host}>
+    <section class={style.host}>
       <div class={style.snowbox} ref={snowBox} >
         <div>
           <h2>
@@ -111,6 +111,6 @@ export default function Snow() {
           </pre>
         </codeblock-dark>
       </div>
-    </div>
+    </section>
   );
 }

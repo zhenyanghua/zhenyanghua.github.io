@@ -1,0 +1,40 @@
+.host {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mapsection {
+  height: 400px;
+  min-width: 320px;
+  background-color: rgb(172, 219, 254);
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.instruction {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 20px;
+}
+
+.codeblock {
+  padding: 20px;
+}
+
+.gmnoprint {
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .host {
+    flex-wrap: nowrap;
+  }
+  .instruction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
