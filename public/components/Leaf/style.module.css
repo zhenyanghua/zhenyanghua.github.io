@@ -1,0 +1,39 @@
+.host {
+  box-sizing: border-box;
+  display: block;
+  --leaf-variance: left;
+  --leaf-size: 10;
+  --leaf-color: #73CE8F;
+  background-image: paint(leaf);
+  padding: calc(var(--leaf-size) * 5px);
+}
+
+.host .control {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.host .control > label {
+  min-width: 170px;;
+}
+
+.host .radio-group > div {
+  display: flex;
+}
+
+.host h2 {
+  margin-top: 0;
+}
+
+.host p,
+.host label,
+.host pre {
+  font-size: 1.2rem !important;
+}
+
+@media (min-width: 768px) {
+  .host {
+    --leaf-size: 24;
+  }
+}
