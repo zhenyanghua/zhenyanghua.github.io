@@ -47,21 +47,42 @@ export default function Snow() {
     nextTimeToStopSnow.current = setTimeout(() => {
       stopSnow();
       nextTimeToStopSnow.current = null;
-    }, 120000);
+    }, 30000);
   }
 
 
   useEffect(() => {
+    let obs;
     // snow fall
     if (snowBox.current) {
       import('effect-snow').then(({default: SnowFall}) => {
         snow.current = new SnowFall(snowBox.current);
-        // startSnow();
-      })
+      });
+
+      // start the snow when this section enters 25% threshold and intersection ratio is increasing
+      // stop the snow when this section enters 25% threshold and intersection ratio is decreasing
+      const obsOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.25
+      };
+      obs = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            startSnow();
+          } else {
+            stopSnow();
+          }
+        }
+      }, obsOptions);
+      obs.observe(snowBox.current);
     }
 
     return () => {
       stopSnow();
+      if (obs) {
+        obs.disconnect();
+      }
     }
   }, []);
 
