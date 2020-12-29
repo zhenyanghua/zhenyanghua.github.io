@@ -59,12 +59,12 @@ export default function Snow() {
         snow.current = new SnowFall(snowBox.current);
       });
 
-      // start the snow when this section enters 25% threshold and intersection ratio is increasing
-      // stop the snow when this section enters 25% threshold and intersection ratio is decreasing
+      // start the snow when this section enters 50% threshold and intersection ratio is increasing
+      // stop the snow when this section enters 50% threshold and intersection ratio is decreasing
       const obsOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.25
+        threshold: 0.5
       };
       obs = new IntersectionObserver(entries => {
         for (const entry of entries) {
@@ -87,7 +87,7 @@ export default function Snow() {
   }, []);
 
   return (
-    <div class={style.host}>
+    <section class={style.host}>
       <div class={style.snowbox} ref={snowBox} >
         <div>
           <h2>
@@ -111,6 +111,6 @@ export default function Snow() {
           </pre>
         </codeblock-dark>
       </div>
-    </div>
+    </section>
   );
 }

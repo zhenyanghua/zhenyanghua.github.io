@@ -5,9 +5,22 @@ const htmlText = `
 <!-- html -->
 <script src="https://unpkg.com/houdini-leaf"></script>`;
 
+const codeStyles = (leafSize) => `
+pre {
+  margin-left: -${leafSize * 5}px !important;
+  margin-right: -${leafSize * 5}px !important;
+}
+@media (min-width: 768px) {
+  pre {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }  
+}
+`;
+
 export default function Leaf() {
   const [variance, setVariance] = useState('left');
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(16);
   const [color, setColor] = useState('#73CE8F');
 
   const leafStyle = {
@@ -21,7 +34,7 @@ export default function Leaf() {
   }
 
   return (
-    <div class={style.host} style={leafStyle}>
+    <section class={style.host} style={leafStyle}>
       <div>
         <h2>
           <a target="_blank" href="https://github.com/zhenyanghua/houdini/tree/master/leaf">
@@ -61,6 +74,7 @@ export default function Leaf() {
         </div>
       </div>
       <codeblock-light>
+        <style>{codeStyles(size)}</style>
         <pre>
           <code class="lang-html">{htmlText}</code>
           <code class="lang-css">{`
@@ -73,6 +87,6 @@ export default function Leaf() {
 }`}</code>
         </pre>
       </codeblock-light>
-    </div>
+    </section>
   );
 }

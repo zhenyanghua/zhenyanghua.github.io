@@ -54,7 +54,7 @@ button.inverted {
   overflow: hidden;
 }
 
-@media (min-width: var(--maxWidth)) {
+@media (min-width: 1280px) {
   #contentcontainer {
     margin: 0 auto;
     max-width: var(--maxWidth);
