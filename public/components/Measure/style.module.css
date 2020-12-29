@@ -16,7 +16,7 @@
 
 .instruction {
   flex: 1 1 auto;
-  overflow: auto;
+  overflow: hidden;
   padding: 20px;
 }
 
@@ -28,13 +28,15 @@
   pointer-events: none;
 }
 
+.icon {
+
+}
+
 @media (min-width: 768px) {
   .host {
     flex-wrap: nowrap;
   }
   .instruction {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
   }
 }

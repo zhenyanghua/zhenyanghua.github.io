@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'preact/hooks';
 import {injectScript} from "../../utils/dom";
 
 const gmapsApiKey = 'AIzaSyBTdH3AFSWLD3SrgbNqTGoRsg3U6W0qAAg';
+// const gmapsApiKey = 'AIzaSyA8oZcMANmVJomlEfVj7LQf8DuD0NCHPVw';
 
 const htmlText = `<!-- html -->
 <script src="https://unpkg.com/measuretool-googlemaps-v3"></script>
@@ -13,7 +14,16 @@ const codeText = `
 const measureTool = new MeasureTool(map);`
 
 const codeStyles = `
-
+pre {
+  margin-left: -20px !important;
+  margin-right: -20px !important;
+}
+@media (min-width: 768px) {
+  pre {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }  
+}
 `;
 const center = {lat: 41.70, lng: -71.47};
 const segments = [
@@ -89,7 +99,8 @@ export default function Measure() {
   };
 
   useEffect(() => {
-    let obs;
+    let intersectionObs;
+    let mutationObs;
     let map;
 
     const initMap = async () => {
@@ -113,6 +124,23 @@ export default function Measure() {
           unit: 'IMPERIAL'
         });
         measureTool.current.start(segments);
+
+        const findTags = (node, tag, found) => {
+          if (node.nodeName.toUpperCase() === tag.toUpperCase()) {
+            found.push(node);
+            return;
+          }
+          if (node.childList && node.childList.length > 0) {
+            for (const child of node.childList) {
+              findTags(child, found);
+            }
+          }
+        }
+        setTimeout(() => {
+          let tabbable = Array.from(mapRef.current.querySelectorAll('a'));
+          tabbable = tabbable.concat(Array.from(mapRef.current.querySelectorAll('[tabindex="0"]')));
+          tabbable.forEach(node => node.setAttribute('tabindex', "-1"));
+        }, 2000);
       }
     };
 
@@ -123,19 +151,22 @@ export default function Measure() {
         rootMargin: '0px',
         threshold: 0.25
       };
-      obs = new IntersectionObserver(entries => {
+      intersectionObs = new IntersectionObserver(entries => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             initMap();
           }
         }
       }, obsOptions);
-      obs.observe(mapRef.current);
+      intersectionObs.observe(mapRef.current);
     }
 
     return () => {
-      if (obs) {
-        obs.disconnect();
+      if (intersectionObs) {
+        intersectionObs.disconnect();
+      }
+      if (mutationObs) {
+        mutationObs.disconnect();
       }
       if (measureTool.current) {
         measureTool.current.end();
