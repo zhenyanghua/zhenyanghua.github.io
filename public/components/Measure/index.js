@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'preact/hooks';
 import {injectScript} from "../../utils/dom";
 
 const gmapsApiKey = 'AIzaSyBTdH3AFSWLD3SrgbNqTGoRsg3U6W0qAAg';
-// const gmapsApiKey = 'AIzaSyA8oZcMANmVJomlEfVj7LQf8DuD0NCHPVw';
 
 const htmlText = `<!-- html -->
 <script src="https://unpkg.com/measuretool-googlemaps-v3"></script>
