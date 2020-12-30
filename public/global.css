@@ -12,7 +12,7 @@ html, body {
   width: 100%;
 }
 
-*:not(code span) {
+*:not(code):not(span):not(button):not(a) {
   font-family: 'EB Garamond', serif;
   color: var(--black);
 }
