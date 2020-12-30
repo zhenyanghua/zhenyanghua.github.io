@@ -14,8 +14,8 @@ snow.stop();
 const codeStyles = `
 pre {
   contain: content;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin-left: -20px !important;
+  margin-right: -20px !important;
   background-color: var(--deepBlue) !important;
   font-size: 1.2rem !important;
 }
@@ -24,6 +24,8 @@ pre {
   pre {
     display: flex !important;
     justify-content: center !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }`
 
@@ -59,12 +61,12 @@ export default function Snow() {
         snow.current = new SnowFall(snowBox.current);
       });
 
-      // start the snow when this section enters 50% threshold and intersection ratio is increasing
-      // stop the snow when this section enters 50% threshold and intersection ratio is decreasing
+      // start the snow when this section enters 80% threshold and intersection ratio is increasing
+      // stop the snow when this section enters 80% threshold and intersection ratio is decreasing
       const obsOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.5
+        threshold: 0.8
       };
       obs = new IntersectionObserver(entries => {
         for (const entry of entries) {
