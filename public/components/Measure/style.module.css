@@ -5,7 +5,7 @@
 
 .mapsection {
   height: 400px;
-  min-width: 320px;
+  width: 100%;
   background-color: rgb(172, 219, 254);
 }
 
@@ -36,7 +36,7 @@
   .host {
     flex-wrap: nowrap;
   }
-  .instruction {
-
+  .mapsection {
+    width: 400px;
   }
 }
