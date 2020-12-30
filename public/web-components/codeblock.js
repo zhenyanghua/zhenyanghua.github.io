@@ -66,7 +66,6 @@ function registerCodeblock () {
           this.obs = new MutationObserver(((mutations) => {
             for (const mutation of mutations) {
               if (mutation.type === 'characterData') {
-                console.debug('highlight from mutation', slot.assignedNodes());
                 this.highlight(slot);
               }
             }
