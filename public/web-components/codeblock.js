@@ -90,9 +90,10 @@ function registerCodeblock () {
   });
 }
 
-// enter manual mode, must be called before loading prism script
-window.Prism = window.Prism || {};
-Prism.manual = true;
-
+if (typeof window !== 'undefined') {
+  // enter manual mode, must be called before loading prism script
+  window.Prism = window.Prism || {};
+  Prism.manual = true;
+}
 injectScript('/prism.js').then(registerCodeblock);
 
