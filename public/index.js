@@ -1,12 +1,11 @@
-import { render } from 'preact';
+import hydrate from 'preact-iso/hydrate'
 import App from './components/app';
 import './web-components/codeblock';
-
 
 if (typeof window !== 'undefined') {
   async function init() {
     await import('houdini-leaf');
-    render(<App />, document.body);
+    hydrate(<App />);
   }
 
   if (self.CSS && self.CSS.paintWorklet) {
@@ -15,4 +14,9 @@ if (typeof window !== 'undefined') {
     import('css-paint-polyfill')
       .then(init);
   }
+}
+
+export async function prerender(data) {
+  const { default: prerender } = await import('preact-iso/prerender')
+  return prerender(<App {...data} />)
 }

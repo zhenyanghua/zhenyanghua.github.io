@@ -3,9 +3,9 @@
  *  This codeblock implementation uses a one way data flow, which
  *  hides the original user provided code from light dom and
  *  build a scoped style code in the shadow dom. It observes
- *  the changes from the light dom and rebuild the shadow dome.
+ *  the changes from the light dom and rebuild the shadow dom.
  *
- * Know limitations
+ * Known limitations
  * Currently implementation is very naive, it clears the shadow
  * dome placeholder and replace the entire content. One better
  * approach could be to make a copy of the light dom first in memory
@@ -36,7 +36,7 @@ function registerCodeblock () {
     customElements.define(`codeblock-${theme}`, class extends HTMLElement {
       constructor() {
         super();
-        let shadowRoot = this.attachShadow({ mode: 'open' });
+        const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
       }
 
