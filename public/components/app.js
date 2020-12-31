@@ -1,17 +1,23 @@
+import { LocationProvider, Router } from 'preact-iso/router';
+import { ErrorBoundary } from 'preact-iso/lazy';
 import Header from './Header';
-import Snow from './Snow';
-import Leaf from './Leaf';
-import Measure from "./Measure";
+import { routes } from "./routes";
 
 export default function App() {
   return (
-    <div id="contentcontainer" class="shadow">
-      <Header />
-      <main id="maincontent">
-        <Measure />
-        <Snow />
-        <Leaf />
-      </main>
-    </div>
-  )
+    <LocationProvider>
+      <div id="contentcontainer" className="shadow">
+        <Header/>
+        <main id="maincontent">
+          <ErrorBoundary>
+            <Router>
+              {routes.map(({ Route, url }) => (
+                <Route path={url} />
+              ))}
+            </Router>
+          </ErrorBoundary>
+        </main>
+      </div>
+    </LocationProvider>
+  );
 }

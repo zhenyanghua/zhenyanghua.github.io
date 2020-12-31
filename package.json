@@ -18,6 +18,7 @@
   "dependencies": {
     "css-paint-polyfill": "^2.0.0",
     "effect-snow": "^1.0.8",
-    "houdini-leaf": "^1.0.6"
+    "houdini-leaf": "^1.0.6",
+    "preact-iso": "^0.2.0"
   }
 }
