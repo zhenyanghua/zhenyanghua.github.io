@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "wmr",
-    "build": "wmr build",
+    "build": "wmr build --prerender",
     "serve": "wmr serve --http2",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"

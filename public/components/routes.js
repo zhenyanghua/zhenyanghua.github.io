@@ -13,6 +13,6 @@ export const routes = [
     url: '/articles',
     title: 'Articles',
     label: 'Articles',
-    Route: ArticlesPage
+    Route: ArticlesPage,
   }
 ];
