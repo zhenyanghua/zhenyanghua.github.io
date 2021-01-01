@@ -1,11 +1,9 @@
-# development
 node_modules
-# misc
 .DS_Store
 .env
-npm-debug.log
+*.log
 .idea
-*.iml
 package-lock.json
 .cache
 dist
+public/posts
