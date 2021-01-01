@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": "true",
   "scripts": {
-    "start": "wmr",
-    "build": "wmr build --prerender",
-    "b": "node ./posts/_build.js",
+    "start": "npm run posts && wmr",
+    "build": "npm run posts && wmr build --prerender",
+    "posts": "node ./posts/_build.js",
     "serve": "wmr serve --http2",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
