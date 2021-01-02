@@ -1,8 +1,14 @@
 ---
 title: 'Create a Scope limited Codeblock Web Component'
 date: 2020-12-30 17:00:00
-summary: Create a Scope limited Codeblock Web Component
-meta: Create a Scope limited Codeblock Web Component
+summary: 'Modern web platform allows us to write custom elements and with the assistance of shadow DOM,
+we are able to ensure the style and behavior of the custom elements are consistent and no external styles
+or behaviors are propagated in or leaked out. This post walks through some keypoints by creating a scope
+limited codeblock element.'
+meta: 'Modern web platform allows us to write custom elements and with the assistance of shadow DOM,
+we are able to ensure the style and behavior of the custom elements are consistent and no external styles
+or behaviors are propagated in or leaked out. This post walks through some keypoints by creating a scope
+limited codeblock element.'
 ---
 
 ## Table of Content
@@ -178,4 +184,4 @@ This `codeblock` implementation uses a one way data flow, which hides the origin
 
 ## Known limitations
 
-Currently implementation is very naive -- it clears the shadow DOM placeholder and replace the entire content. One better approach could be to make a copy of the light DOM first in memory  and highlight the clone, then diff it with the one in the shadow DOM and swap only the part that is different. This may reduce the flash between render, even though currently it is hard to observe the flash.
+Currently implementation is naive -- it clears the shadow DOM placeholder and replace the entire content. One better approach could be to make a copy of the light DOM first in memory  and highlight the clone, then diff it with the one in the shadow DOM and swap only the part that is different. This may reduce the flash between render, even though currently it is hard to observe the flash.

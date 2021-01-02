@@ -1,8 +1,10 @@
 ---
 title: 'NPM Dependencies vs DevDependencies'
 date: 2020-10-24 17:00:00
-summary: Examines the difference between dependenceis and devDependencies in NPM.
-meta: Examines the difference between dependenceis and devDependencies in NPM.
+summary: 'When you build a JavaScript library, dependencies and devDependencies matter. This post examines 
+the difference between dependencies and devDependencies in NPM.'
+meta: 'When you build a JavaScript library, dependencies and devDependencies matter. This post examines
+the difference between dependencies and devDependencies in NPM.'
 ---
 
 # What's the difference between dependencies and devDependencies in npm?

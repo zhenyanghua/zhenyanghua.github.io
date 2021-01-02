@@ -9,6 +9,9 @@
   --maxWidth: 1280px;
 }
 
+html {
+  font-size: 18px;
+}
 html, body {
   margin: 0;
   width: 100%;

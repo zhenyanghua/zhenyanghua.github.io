@@ -1,5 +1,7 @@
 @import url('/prism-light.css');
 .post {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   padding: 0 16px 80px 16px;
 }
 .title {
@@ -51,6 +53,9 @@ code {
     --leaf-size: 18;
     background-image: paint(leaf);
     padding-left: calc(var(--leaf-size) * 5px);
+    box-sizing: border-box;
+    max-width: 768px;
+    justify-self: center;
   }
   blockquote {
     margin: 16px 40px;

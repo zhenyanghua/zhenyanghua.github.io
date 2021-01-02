@@ -37,6 +37,7 @@
     flex-wrap: nowrap;
   }
   .mapsection {
+    height: auto;
     width: 400px;
   }
 }
