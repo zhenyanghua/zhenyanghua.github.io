@@ -1,14 +1,10 @@
 import style from './style.module.css';
 import { useEffect } from 'preact/hooks';
+import { formatTime } from "../../utils/time";
 
 const gitRoot = 'https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts';
 
 export default function Post ({ children, path, title, date }) {
-  const formattedDate = new Date(date).toLocaleDateString(undefined, {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  });
 
   useEffect(() => {
     document.title = `${title} - Zhenyang Hua`;
@@ -16,12 +12,12 @@ export default function Post ({ children, path, title, date }) {
 
   return (
     <div class={style.post}>
-      <h1 class="title">{title}</h1>
-      <p class="date">Posted on {formattedDate}</p>
+      <h1 class={style.title}>{title}</h1>
+      <p class={style.date}>Posted on {formatTime(date)}</p>
       {children}
-      <div>
+      <h2 class={style.github}>
         <a target="_blank" href={`${gitRoot}${path}/index.md`}>Read on GitHub</a>
-      </div>
+      </h2>
     </div>
   );
 }

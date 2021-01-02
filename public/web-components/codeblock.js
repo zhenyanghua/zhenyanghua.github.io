@@ -22,13 +22,15 @@ function registerCodeblock () {
     const template = document.createElement('template');
     template.innerHTML = `
     <link rel="stylesheet" href="/prism-${theme}.css" />
-    ${theme === 'dark' ?
-      `<style>
-      :not(pre) > code[class*="language-"], pre[class*="language-"] {
+    <style>
+      ${theme === 'dark' ? 
+      `:not(pre) > code[class*="language-"], pre[class*="language-"] {
         background: var(--deepBlue);
+      }`: ''}
+      code[class*="language-"], pre[class*="language-"] {
+        text-shadow: none;
       }
-    </style>`
-      : ''}
+    </style>
     <div class="codeblock"></div>
     <slot style="display: none"></slot>
   `;

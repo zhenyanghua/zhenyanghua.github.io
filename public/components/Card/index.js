@@ -1,6 +1,7 @@
 import style from './style.module.css';
+import { formatTime } from "../../utils/time";
 
-export default function Card({ class: clazz, url, title, summary }) {
+export default function Card({ class: clazz, url, title, summary, date }) {
   let className = style.card;
   if (clazz) {
     className = `${className} ${clazz}`;
@@ -10,6 +11,7 @@ export default function Card({ class: clazz, url, title, summary }) {
       <h2 class={style.title}>
         <a href={url}>{title}</a>
       </h2>
+      <p class={style.date}>{formatTime(date)}</p>
       <p class={style.summary}>{summary}</p>
     </div>
   )

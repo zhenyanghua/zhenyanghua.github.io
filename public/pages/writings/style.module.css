@@ -1,7 +1,20 @@
+.writings {
+  padding: 0 16px 80px 16px;
+}
+
 .list {
 
 }
 
 .card {
-  margin: 10px;
+  margin: 16px 0;
+}
+
+
+@media (min-width: 768px) {
+  .list {
+    --leaf-size: 18;
+    background-image: paint(leaf);
+    padding-left: calc(var(--leaf-size) * 5px);
+  }
 }
