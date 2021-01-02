@@ -13,6 +13,9 @@ export default function Card({ class: clazz, url, title, summary, date }) {
       </h2>
       <p class={style.date}>{formatTime(date)}</p>
       <p class={style.summary}>{summary}</p>
+      <p class={style.readmore} aria-label={`Read more about ${title}`}>
+        <a href={url}>Read more</a>
+      </p>
     </div>
   )
 }

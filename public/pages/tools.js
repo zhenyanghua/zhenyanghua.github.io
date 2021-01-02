@@ -1,12 +1,11 @@
-import { useEffect } from 'preact/hooks';
 import Measure from "../components/Measure";
 import Snow from "../components/Snow";
 import Leaf from "../components/Leaf";
+import { useTitle } from "../utils/dom";
+
 
 export default function Tools () {
-  useEffect(() => {
-    document.title = 'Zhenyang Hua';
-  }, []);
+  useTitle();
 
   return (
     <>

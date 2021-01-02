@@ -1,16 +1,14 @@
-import { useEffect } from 'preact/hooks';
 import { useLoc } from "preact-iso/router";
 import { formatTime } from "../../utils/time";
+import { useAnchor, useTitle } from "../../utils/dom";
 import style from './style.module.css';
 
 const gitRoot = 'https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts';
 
 export default function Post ({ children, title, date }) {
+  useTitle(title);
+  useAnchor();
   const { path } = useLoc();
-
-  useEffect(() => {
-    document.title = `${title} - Zhenyang Hua`;
-  }, []);
 
   return (
     <div class={style.post}>

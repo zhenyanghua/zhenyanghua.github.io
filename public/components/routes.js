@@ -2,6 +2,7 @@ import lazy from 'preact-iso/lazy';
 const Tools = lazy(() => import('../pages/tools'));
 const Writings = lazy(() => import('../pages/writings'));
 
+
 export const routes = [
   {
     url: '/',

@@ -7,9 +7,10 @@
 nav ul {
   display: flex;
   list-style-type: none;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-transform: capitalize;
   padding-inline-start: 0;
+  margin: 0;
 }
 
 nav li {

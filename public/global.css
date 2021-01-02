@@ -59,6 +59,28 @@ button.inverted {
   overflow: hidden;
 }
 
+.anchor {
+  text-decoration: none;
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+.anchor .icon {
+  color: var(--deepBlue);
+  vertical-align: middle;
+  visibility: hidden;
+}
+
+h1:hover .anchor .icon,
+h2:hover .anchor .icon,
+h3:hover .anchor .icon,
+h4:hover .anchor .icon,
+h5:hover .anchor .icon,
+h6:hover .anchor .icon {
+  visibility: visible;
+}
+
 @media (min-width: 1280px) {
   #contentcontainer {
     margin: 0 auto;
