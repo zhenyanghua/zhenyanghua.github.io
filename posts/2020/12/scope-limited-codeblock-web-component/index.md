@@ -1,4 +1,9 @@
-# Create a Scope limited Codeblock Web Component
+---
+title: 'Create a Scope limited Codeblock Web Component'
+date: 2020-12-30 17:00:00
+summary: Create a Scope limited Codeblock Web Component
+meta: Create a Scope limited Codeblock Web Component
+---
 
 ## Table of Content
 - [Create a custom element](#create-a-custom-element)

@@ -1,12 +1,18 @@
+import { useEffect } from 'preact/hooks';
 import style from './style.module.css';
 import { posts } from '../../posts/posts';
+import Card from "../../components/Card";
 
 export default function Writings() {
+  useEffect(() => {
+    document.title = 'Writings - Zhenyang Hua';
+  }, []);
+
   return (
-    <>
+    <div class={style.list}>
       {posts.map(post => (
-        <a href={post.url} key={post.url}>{post.label}</a>
+          <Card class={style.card} key={post.url} {...post} />
       ))}
-    </>
+    </div>
   )
 }
