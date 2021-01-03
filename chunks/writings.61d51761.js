@@ -1,0 +1,3 @@
+import{m as t,c as r}from"../index.4d2539ec.js";import"./time.daaab1ba.js";import{W as i}from"./index.02624127.js";export default function(){return t`<${i} posts=${r} page=${{current:1,total:5,prev:"/writings/1",next:"/writings/2",lastPage:"/writings/5"}}/>`}
+function $w_s$(e,t){document.querySelector('link[rel=stylesheet][href="'+e+'"]')||((t=document.createElement("link")).rel="stylesheet",t.href=e,document.head.appendChild(t))}
+$w_s$("/assets/style.module.001d6c98.css");

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Zhenyang Hua</title>
+  <link rel="stylesheet" href="/assets/global.5d0386ac.css">
+<link rel="stylesheet" href="/assets/style.module.edc5e2a1.css"></head>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(45, 248, 5);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/">Tools</a></li><li><a href="/writings/1">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Behavioral Patterns - Template Method Pattern Exercise</h1><p class="date_14b9dxr">Posted on 07/11/2018</p><div class="summary_14b9dxr"><p>The Template Method Pattern defines the skeleton of an algorithm in a method, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm’s structure. In this exercise, we will use the Template Method Pattern to create a Three Course Dinner Template for training restaurant staff for preparing the meal.</p>
+</div><article><h2>
+  <a id="reading-materials" class="anchor" aria-hidden="true" href="#reading-materials">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Reading Materials</h2><ol>
+<li><a target="_blank" href="https://en.wikipedia.org/wiki/Template_method_pattern"><i class="external alternate icon"></i> https://en.wikipedia.org/wiki/Template_method_pattern</a> (10 minutes reading)</li>
+</ol>
+<h2>
+  <a id="practice-materials" class="anchor" aria-hidden="true" href="#practice-materials">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Practice Materials</h2><ol>
+<li>Use the <strong>Template Method Pattern</strong> to create a Three-Course Dinner Template that meets the following requirements:</li>
+</ol>
+<ul>
+<li>It defines a set of steps in the following order:<ul>
+<li><code>beforeStart</code> (hook)</li>
+<li><code>serveBeverage</code> (optional)<ul>
+<li><code>makeBeverage</code> (only if serveBeverage is true)</li>
+</ul>
+</li>
+<li><code>makeStarter</code></li>
+<li><code>makeEntry</code></li>
+<li><code>makeDessert</code>;</li>
+<li><code>afterFinish</code> (hook)</li>
+</ul>
+</li>
+<li>Make two concrete three-course dinners by using the Three-Course Dinner Template.</li>
+</ul>
+<h3>
+  <a id="components-" class="anchor" aria-hidden="true" href="#components-">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Components:</h3><ol>
+<li>Abstract Class (The abstract class that defines the steps of algorithms and abstract method and hooks for subclasses to implement) - <code>ThreeCourseDinnerTemplate</code></li>
+<li>SubClass (The implementations of the <code>ThreeCourseDinnerTemplate</code>) - <code>SurfNTurfDinner</code>, <code>VegetarianDinner</code></li>
+</ol>
+<h3>
+  <a id="tips" class="anchor" aria-hidden="true" href="#tips">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Tips</h3><ul>
+<li>A hook may provide a way for a subclass to implement an optional part of an algorithm, or if it isn’t important to the subclass’s implementation, it can skip it. Another use is to give the subclass a chance to react to some step in the template method that is about to happen or just happened.</li>
+</ul>
+<h3>
+  <a id="solution" class="anchor" aria-hidden="true" href="#solution">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Solution</h3><p><a target="_blank" href="https://github.com/zhenyanghua/design-patterns/tree/master/TemplateMethodPatternExample/src/main/java"><i class="external alternate icon"></i> Three-Course Dinner Example</a></p>
+<h2>
+  <a id="questions-to-discuss" class="anchor" aria-hidden="true" href="#questions-to-discuss">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Questions to discuss</h2><ol>
+<li>What are the common use cases to apply the <strong>Template Method Pattern</strong>?</li>
+<li>What are the differences between the <strong>Template Method Pattern</strong> and the <a href="https://leafyjava.com/articles/behavioral-patterns-strategy-pattern-exercise"><strong>Strategy Pattern</strong></a>?</li>
+</ol>
+</article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts/2018/07/behavioral-patterns-template-method-pattern-exercise/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
+  <script type="module" src="/index.3ae450ce.js"></script>
+</body>
+</html>
+

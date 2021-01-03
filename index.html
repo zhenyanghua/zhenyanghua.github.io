@@ -5,10 +5,72 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Zhenyang Hua</title>
-  <link rel="stylesheet" href="/assets/global.9af23783.css">
-</head>
-<body>
-  <script type="module" src="/index.288f5389.js"></script>
+  <link rel="stylesheet" href="/assets/global.5d0386ac.css">
+<link rel="stylesheet" href="/assets/style.module.b4090809.css"></head>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(49, 229, 226);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="undefined active_m2uvri">Tools</a></li><li><a href="/writings/1">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><section id="measure" class="host_12vkevj"><div class="mapsection_12vkevj" tab-index="-1"><div class="map_12vkevj"></div></div><div class="instruction_12vkevj"><h2><a target="_blank" href="https://github.com/zhenyanghua/MeasureTool-GoogleMaps-V3">Measurement Tool for Google Maps JS API</a></h2><p>A handy measurement widget for Google Maps API v3.
+          The functionalities are implemented as close as to what current Google Maps offers.</p><div><button>start</button><button>stop</button></div><codeblock-light class="codeblock_12vkevj"><style>
+pre {
+  margin-left: -20px !important;
+  margin-right: -20px !important;
+}
+@media (min-width: 768px) {
+  pre {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }  
+}
+</style><pre><code class="lang-html">&lt;!-- html --&gt;
+&lt;script src=&quot;https://unpkg.com/measuretool-googlemaps-v3&quot;&gt;&lt;/script&gt;
+</code><code class="lang-js">
+// Pass in the google maps instance to create the measure tool
+const measureTool = new MeasureTool(map);</code></pre></codeblock-light></div></section><section id="snow" class="host_utq90y"><div class="snowbox_utq90y"><div><h2><a target="_blank" href="https://github.com/zhenyanghua/effects/tree/main/snow">Snow Effect Overlay</a></h2><p>Try the snow effect in your site with
+            three lines of code</p><div class="button-group"><button class="inverted">start the snow</button><button class="inverted">stop the snow</button></div></div><codeblock-dark><style>
+pre {
+  contain: content;
+  margin-left: -20px !important;
+  margin-right: -20px !important;
+  background-color: var(--deepBlue) !important;
+  font-size: 1.2rem !important;
+}
+
+@media (min-width: 462px) {
+  pre {
+    display: flex !important;
+    justify-content: center !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}</style><pre><code class="lang-js">
+// Create a snow scene instance and
+// mount it to the container element
+const snow = new Snow(containerElement);
+// To start
+snow.start();
+// To stop
+snow.stop();
+</code></pre></codeblock-dark></div></section><section id="leaf" class="host_1ey0ie1" style="--leaf-variance: left; --leaf-size: 16; --leaf-color: #73CE8F;"><div><h2><a target="_blank" href="https://github.com/zhenyanghua/houdini/tree/master/leaf">CSS Houdini Leaf Effect</a></h2><p>Leaf effect is a decorative border that uses CSS Houdini Paint API to bring special effect through background
+          image or any where an image could be used. Try it out without writing any JavaScript!</p><div><div class="control_1ey0ie1 undefined"><label for="controls"><code class="lang-css">--leaf-variance</code></label><div><div class="radio"><input type="radio" id="left" name="variance" value="left" checked /><label for="left">left</label></div><div class="radio"><input type="radio" id="around" name="variance" value="around" /><label for="around">around</label></div></div></div><div class="control_1ey0ie1"><label for="size"><code class="lang-css">--leaf-size</code></label><input type="range" min="10" max="32" id="size" name="size" value="16" /></div><div class="control_1ey0ie1"><label for="color"><code class="lang-css">--leaf-color</code></label><input type="color" id="color" name="color" value="#73CE8F" /></div></div></div><codeblock-light><style>
+pre {
+  margin-left: -80px !important;
+  margin-right: -80px !important;
+}
+@media (min-width: 768px) {
+  pre {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }  
+}
+</style><pre><code class="lang-html">
+&lt;!-- html --&gt;
+&lt;script src=&quot;https://unpkg.com/houdini-leaf&quot;&gt;&lt;/script&gt;</code><code class="lang-css">
+/* CSS */
+.element {
+  --leaf-variance: left;
+  --leaf-size: 16;
+  --leaf-color: #73CE8F;
+  background-image: paint(leaf);
+}</code></pre></codeblock-light></section></main></div><script type="isodata"></script>
+  <script type="module" src="/index.3ae450ce.js"></script>
 </body>
 </html>
 
