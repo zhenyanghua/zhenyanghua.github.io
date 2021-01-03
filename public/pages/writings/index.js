@@ -10,7 +10,7 @@ export default function Writings() {
     <div class={style.writings}>
       <div className={style.list}>
         {posts.map(post => (
-          <Card class={style.card} key={post.url} {...post} url={`${post.url}#maincontent`} />
+          <Card id={post.url} class={style.card} key={post.url} {...post} url={`${post.url}#maincontent`} />
         ))}
       </div>
     </div>

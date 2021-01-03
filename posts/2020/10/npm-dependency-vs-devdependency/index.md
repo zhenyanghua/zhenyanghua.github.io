@@ -1,13 +1,12 @@
 ---
 title: 'NPM Dependencies vs DevDependencies'
 date: 2020-10-24 17:00:00
-summary: 'When you build a JavaScript library, dependencies and devDependencies matter. This post examines 
-the difference between dependencies and devDependencies in NPM.'
-meta: 'When you build a JavaScript library, dependencies and devDependencies matter. This post examines
-the difference between dependencies and devDependencies in NPM.'
 ---
+When you build a JavaScript library, dependencies and devDependencies matter. This post examines
+the difference between dependencies and devDependencies in NPM.
+<!-- Excerpt End -->
 
-# What's the difference between dependencies and devDependencies in npm?
+## What's the difference between dependencies and devDependencies in npm?
 
 If you are creating just an application, or a service, there isn't a difference in the usage. 
 However, if you are creating a library, this following key part may help you understand the 

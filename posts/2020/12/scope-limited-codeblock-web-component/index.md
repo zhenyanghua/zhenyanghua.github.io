@@ -1,15 +1,12 @@
 ---
 title: 'Create a Scope limited Codeblock Web Component'
 date: 2020-12-30 17:00:00
-summary: 'Modern web platform allows us to write custom elements and with the assistance of shadow DOM,
-we are able to ensure the style and behavior of the custom elements are consistent and no external styles
-or behaviors are propagated in or leaked out. This post walks through some keypoints by creating a scope
-limited codeblock element.'
-meta: 'Modern web platform allows us to write custom elements and with the assistance of shadow DOM,
-we are able to ensure the style and behavior of the custom elements are consistent and no external styles
-or behaviors are propagated in or leaked out. This post walks through some keypoints by creating a scope
-limited codeblock element.'
 ---
+Modern web platform allows us to write custom elements and with the assistance of shadow DOM,
+we are able to ensure the style and behavior of the custom elements are consistent and no external styles
+or behaviors are propagated in or leaked out. This post walks through some keypoints by creating a scope
+limited codeblock element.
+<!-- Excerpt End -->
 
 ## Table of Content
 - [Create a custom element](#create-a-custom-element)

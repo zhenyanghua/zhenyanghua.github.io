@@ -4,6 +4,8 @@ const marked = require('marked');
 const matter = require('gray-matter');
 const escape = require('escape-html');
 const Prism = require('prismjs');
+const loadLanguages = require('prismjs/components/');
+loadLanguages(['java']);
 process.chdir(__dirname);
 
 function indent(strings, ...keys) {
@@ -66,10 +68,11 @@ years.forEach(year => {
     posts.forEach(post => {
       const mdFile = fs.readFileSync(path.join(year, month, post, 'index.md'), 'utf8');
       const url = `/${year}/${month}/${post}`;
-      const { data, content } = matter(mdFile);
-      console.debug(data);
-      // inject meta data to header
-      const html = marked(content, { renderer }).replace(/`/g, '\\`');
+      const { data, content, excerpt } = matter(mdFile, { excerpt_separator: '<!-- Excerpt End -->' });
+      const contentWithoutExcerpt = content.substring(excerpt.length);
+      const summary = marked(excerpt, { renderer }).replace(/`/g, '\\`');
+      const html = marked(contentWithoutExcerpt, { renderer }).replace(/`/g, '\\`');
+      // todo - inject meta data to header
       const template = indent`
         /**
          * Generated source
@@ -78,7 +81,7 @@ years.forEach(year => {
         import Post from '../../../../components/Post';
         export default function() {
           return (
-            <Post {...${JSON.stringify(data)}}>
+            <Post {...${JSON.stringify(data)}} summary="${summary}">
               <article dangerouslySetInnerHTML={{__html: \`${html}\`}} />
             </Post>
           )
@@ -91,7 +94,7 @@ years.forEach(year => {
           url: "${url}",
           title: "${data.title}",
           date: "${data.date}",
-          summary: "${data.summary}",
+          summary: \`${summary}\`,
           Route: lazy(() => import('.${url}')),
         }`;
       postRoutes.push(route);

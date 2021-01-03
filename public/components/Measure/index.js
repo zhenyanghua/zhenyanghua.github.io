@@ -174,7 +174,7 @@ export default function Measure() {
   }, []);
 
   return (
-    <section class={style.host}>
+    <section id="measure" class={style.host}>
       <div class={style.mapsection} tab-index="-1">
         <div class={style.map} ref={mapRef}></div>
       </div>
