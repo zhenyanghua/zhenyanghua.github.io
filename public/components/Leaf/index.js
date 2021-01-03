@@ -34,7 +34,7 @@ export default function Leaf() {
   }
 
   return (
-    <section class={style.host} style={leafStyle}>
+    <section id="leaf" class={style.host} style={leafStyle}>
       <div>
         <h2>
           <a target="_blank" href="https://github.com/zhenyanghua/houdini/tree/master/leaf">

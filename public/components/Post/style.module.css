@@ -1,0 +1,75 @@
+@import url('/prism-light.css');
+.post {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 16px 80px 16px;
+}
+.title {
+  text-align: center;
+}
+.date {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.summary {
+  margin-bottom: 32px;
+  border-radius: 4px;
+  background-color: #f6f5f5;
+  padding: 0 20px;
+  font-style: italic;
+}
+.github {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 40px;
+}
+
+.codeblock code[class*="language-"], pre[class*="language-"] {
+  text-shadow: none;
+}
+
+pre[class*="language-"] {
+  color: var(--deepBlue);
+  border-left: 4px solid var(--deepBlue);
+  border-radius: 4px;
+}
+
+blockquote {
+  margin: 16px 0;
+}
+
+blockquote > p {
+  color: var(--deepBlue);
+  border-left: 4px solid var(--deepBlue);
+  border-radius: 4px;
+  padding: 16px;
+  font-style: italic;
+  background-color: var(--lighterBlue);
+}
+
+code {
+  background-color: var(--lighterBlue);
+  border-radius: 4px;
+  color: var(--deepBlue);
+  padding: 3px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+@media (min-width: 768px) {
+  .summary,
+  article {
+    max-width: 768px;
+    justify-self: center;
+    box-sizing: border-box;
+  }
+
+  article {
+    --leaf-size: 18;
+    background-image: paint(leaf);
+    padding-left: calc(var(--leaf-size) * 5px);
+  }
+
+  blockquote {
+    margin: 16px 40px;
+  }
+}

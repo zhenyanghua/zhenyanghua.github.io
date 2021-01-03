@@ -2,6 +2,14 @@ import { LocationProvider, Router } from 'preact-iso/router';
 import { ErrorBoundary } from 'preact-iso/lazy';
 import Header from './Header';
 import { routes } from "./routes";
+import posts from "../posts/posts";
+import writings from "../posts/writings";
+
+const allRoutes = [
+  ...routes,
+  ...posts,
+  ...writings,
+];
 
 export default function App() {
   return (
@@ -11,7 +19,7 @@ export default function App() {
         <main id="maincontent">
           <ErrorBoundary>
             <Router>
-              {routes.map(({ Route, url }) => (
+              {allRoutes.map(({ Route, url }) => (
                 <Route path={url} />
               ))}
             </Router>

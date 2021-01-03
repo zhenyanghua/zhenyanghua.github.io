@@ -6,6 +6,9 @@
   padding-left: 10px;
 }
 
+.title {
+  font-size: 1.3rem;
+}
 h2 {
   font-family: "Roboto", Arial, SansSerif, sans-serif;
 }

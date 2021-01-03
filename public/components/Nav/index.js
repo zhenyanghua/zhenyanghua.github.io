@@ -1,4 +1,6 @@
 import style from './style.module.css';
+import Link from "../link";
+import {routes} from "../routes";
 
 export default function Nav() {
   return (
@@ -6,8 +8,13 @@ export default function Nav() {
       <nav>
         <h2 class="hidden">Main Navigation</h2>
         <ul>
+          {routes.map(route => (
+            <li>
+              <Link href={route.url} activeClassName={style.active}>{route.label}</Link>
+            </li>
+          ))}
           <li>
-            <a target="_blank" href="https://www.leafyjava.com">LeafyJava</a>
+            <Link href="/writings/1" activeClassName={style.active}>Writings</Link>
           </li>
         </ul>
       </nav>

@@ -1,10 +1,11 @@
 import lazy from 'preact-iso/lazy';
-const HomePage = lazy(() => import('../pages/home'));
+const Tools = lazy(() => import('../pages/tools'));
 
 export const routes = [
   {
     url: '/',
     title: 'Zhenyang Hua',
-    Route: HomePage
+    label: 'Tools',
+    Route: Tools
   }
 ];

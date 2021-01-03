@@ -2,11 +2,16 @@
 
 :root {
   --deepBlue: #013640;
+  --lighterBlue: aliceblue;
   --bg: white;
   --black: black;
+  --darkerRed: #BF1722;
   --maxWidth: 1280px;
 }
 
+html {
+  font-size: 18px;
+}
 html, body {
   margin: 0;
   width: 100%;
@@ -52,6 +57,28 @@ button.inverted {
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+.anchor {
+  text-decoration: none;
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+.anchor .icon {
+  color: var(--deepBlue);
+  vertical-align: middle;
+  visibility: hidden;
+}
+
+h1:hover .anchor .icon,
+h2:hover .anchor .icon,
+h3:hover .anchor .icon,
+h4:hover .anchor .icon,
+h5:hover .anchor .icon,
+h6:hover .anchor .icon {
+  visibility: visible;
 }
 
 @media (min-width: 1280px) {

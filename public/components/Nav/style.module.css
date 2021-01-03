@@ -7,13 +7,21 @@
 nav ul {
   display: flex;
   list-style-type: none;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-transform: capitalize;
   padding-inline-start: 0;
+  margin: 0;
 }
 
 nav li {
   margin: 0 10px;
+}
+
+.active {
+  border: solid 2px var(--deepBlue);
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 @media (min-width: 768px) {

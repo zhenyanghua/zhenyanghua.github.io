@@ -89,7 +89,7 @@ export default function Snow() {
   }, []);
 
   return (
-    <section class={style.host}>
+    <section id="snow" class={style.host}>
       <div class={style.snowbox} ref={snowBox} >
         <div>
           <h2>
