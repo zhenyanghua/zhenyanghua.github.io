@@ -1,7 +1,5 @@
 import lazy from 'preact-iso/lazy';
 const Tools = lazy(() => import('../pages/tools'));
-const Writings = lazy(() => import('../pages/writings'));
-
 
 export const routes = [
   {
@@ -9,11 +7,5 @@ export const routes = [
     title: 'Zhenyang Hua',
     label: 'Tools',
     Route: Tools
-  },
-  {
-    url: '/writings',
-    title: 'Writings - Zhenyang Hua',
-    label: 'Writings',
-    Route: Writings,
   }
 ];

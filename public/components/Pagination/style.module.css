@@ -1,0 +1,14 @@
+.page {
+  text-align: right;
+}
+.page > * {
+  padding: 4px;
+}
+
+@media (min-width: 768px) {
+  .page {
+    box-sizing: border-box;
+    width: 768px;
+    justify-self: center;
+  }
+}

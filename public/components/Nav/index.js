@@ -13,6 +13,9 @@ export default function Nav() {
               <Link href={route.url} activeClassName={style.active}>{route.label}</Link>
             </li>
           ))}
+          <li>
+            <Link href="/writings/1" activeClassName={style.active}>Writings</Link>
+          </li>
         </ul>
       </nav>
     </div>

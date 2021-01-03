@@ -6,6 +6,9 @@
 
 }
 
+.page > * {
+  margin: 0 4px;
+}
 .card {
   margin: 16px 0;
 }
@@ -17,10 +20,14 @@
     grid-template-columns: minmax(0, 1fr);
     padding: 16px 16px 80px 16px;
   }
+
   .list {
     --leaf-size: 18;
     background-image: paint(leaf);
     padding-left: calc(var(--leaf-size) * 4px);
+  }
+
+  .list {
     box-sizing: border-box;
     width: 768px;
     justify-self: center;

@@ -48,13 +48,13 @@ function createRenderer() {
     return indent`
       <h${level}>
         <a id="${escapedText}" class="anchor" aria-hidden="true" href="#${escapedText}">
-          <svg class="icon" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+          <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
         </a>${text}</h${level}>`;
   };
   return renderer;
 }
 
-const postRoutes = [];
+let postRoutes = [];
 const outDir = '../public/posts';
 const renderer = createRenderer();
 
@@ -68,8 +68,9 @@ years.forEach(year => {
     posts.forEach(post => {
       const mdFile = fs.readFileSync(path.join(year, month, post, 'index.md'), 'utf8');
       const url = `/${year}/${month}/${post}`;
-      const { data, content, excerpt } = matter(mdFile, { excerpt_separator: '<!-- Excerpt End -->' });
-      const contentWithoutExcerpt = content.substring(excerpt.length);
+      const excerptSeparator = '<!-- Excerpt End -->';
+      const { data, content, excerpt } = matter(mdFile, { excerpt_separator: excerptSeparator });
+      const contentWithoutExcerpt = content.substring(excerpt.length + excerptSeparator.length);
       const summary = marked(excerpt, { renderer }).replace(/`/g, '\\`');
       const html = marked(contentWithoutExcerpt, { renderer }).replace(/`/g, '\\`');
       // todo - inject meta data to header
@@ -81,7 +82,7 @@ years.forEach(year => {
         import Post from '../../../../components/Post';
         export default function() {
           return (
-            <Post {...${JSON.stringify(data)}} summary="${summary}">
+            <Post {...${JSON.stringify(data)}} summary={\`${summary}\`}>
               <article dangerouslySetInnerHTML={{__html: \`${html}\`}} />
             </Post>
           )
@@ -95,21 +96,103 @@ years.forEach(year => {
           title: "${data.title}",
           date: "${data.date}",
           summary: \`${summary}\`,
-          Route: lazy(() => import('.${url}')),
+          Route: lazy(() => import('..${url}')),
         }`;
-      postRoutes.push(route);
+      postRoutes.push({
+        date: new Date(data.date).getTime(),
+        route
+      });
     });
   });
 });
 
-fs.writeFileSync(
-  path.join(outDir, 'posts.js'),
-  indent`
+// sort by latest date
+postRoutes.sort((a, b) => b.date - a.date);
+postRoutes = postRoutes.map(x => x.route);
+
+console.debug('Found posts: ', postRoutes.length);
+
+// writings pagination
+const pageSize = 10;
+const url = '/writings';
+const writingRoutes = [];
+const totalPages = Math.ceil(postRoutes.length / pageSize);
+let currentPage = 1;
+
+while (currentPage <= totalPages) {
+  const page = {
+    current: currentPage,
+    total: totalPages,
+    prev: `${url}/${currentPage === 1 ? currentPage : currentPage - 1}`,
+    next: `${url}/${currentPage === totalPages ? currentPage : currentPage + 1}`,
+    last: `${url}/${totalPages}`,
+    first: `${url}/1`,
+  };
+  // create writings page route
+  const route = indent`
+    {
+      url: "${url}/${currentPage}",
+      title: "Writings - Zhenyang Hua",
+      Route: lazy(() => import('./page${currentPage}/writings')),
+    }`;
+  writingRoutes.push(route);
+
+  const template = indent`
     /**
      * Generated source
      * @author Zhenyang Hua
      */
-    import lazy from 'preact-iso/lazy';
-    export const posts = [${postRoutes.reverse().join(',\n')}];`
+    import Writings from '../../components/Writings';
+    import posts from './posts';
+    
+    export default function() {
+      return (
+        <Writings posts={posts} page={${JSON.stringify(page)}} />
+      )
+    }`;
+
+  const pageDir = path.join(outDir, `page${currentPage}`);
+  fs.mkdirSync(pageDir, { recursive: true });
+  fs.writeFileSync(path.join(pageDir, 'writings.js'), template);
+
+  const posts = postRoutes.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  fs.writeFileSync(
+    path.join(pageDir, 'posts.js'),
+    indent`
+      /**
+       * Generated source
+       * @author Zhenyang Hua
+       */
+      import lazy from 'preact-iso/lazy';
+      const posts = [${posts.join(',\n')}];
+      export default posts;`
+  );
+
+  currentPage++;
+}
+
+fs.writeFileSync(
+  path.join(outDir, 'writings.js'),
+  indent`
+      /**
+       * Generated source
+       * @author Zhenyang Hua
+       */
+      import lazy from 'preact-iso/lazy';
+      const writings = [${writingRoutes.join(',\n')}];
+      export default writings;`
 );
+
+fs.writeFileSync(
+  path.join(outDir, 'posts.js'),
+  indent`
+    ${new Array(totalPages).fill(0).map((_, i) => `import posts${i + 1} from './page${i + 1}/posts';`).join('\n')}
+    
+    const posts = [
+    ${new Array(totalPages).fill(0).map((_, i) => `...posts${i + 1},`).join('\n')}
+    ];
+    export default posts;`
+);
+
 
