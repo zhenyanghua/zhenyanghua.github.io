@@ -25,6 +25,7 @@ function indent(strings, ...keys) {
 
 function createRenderer() {
   const renderer = new marked.Renderer();
+  // FIXME - codeblock hierarchy is nested, it should be flat.
   renderer.code = (code, infostring, escaped) => {
     if (!infostring || !(infostring in Prism.languages)) {
       return indent`
