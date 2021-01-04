@@ -1,6 +1,6 @@
 ---
 title: 'Behavioral Patterns - Mediator Pattern Exercise'
-date: 2020-05-18 17:00:00
+date: 2018-05-18 17:00:00
 ---
 The Mediator Pattern defines an object that encapsulates how a set of objects interact. In this exercise, we will create a mediator that helps us handle the cross-cutting business logic in the Command Pattern Exercise.
 <!-- Excerpt End -->

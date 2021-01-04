@@ -1,6 +1,6 @@
 ---
 title: 'Behavioral Patterns - Iterator Pattern Exercise'
-date: 2020-05-18 17:00:00
+date: 2018-05-18 17:00:00
 ---
 The iterator pattern is widely used in collections, it simplifies the way a collection could be iterated as well as provides a mutable capability to the collection during the iteration.
 <!-- Excerpt End -->
