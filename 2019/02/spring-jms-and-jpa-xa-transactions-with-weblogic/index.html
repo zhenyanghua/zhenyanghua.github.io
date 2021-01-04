@@ -7,7 +7,7 @@
 	<title>Zhenyang Hua</title>
   <link rel="stylesheet" href="/assets/global.5d0386ac.css">
 <link rel="stylesheet" href="/assets/style.module.edc5e2a1.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(141, 237, 249);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/">Tools</a></li><li><a href="/writings/1">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Spring JMS and JPA XA Transactions with WebLogic</h1><p class="date_14b9dxr">Posted on 02/26/2019</p><div class="summary_14b9dxr"><p>This article shows the configuration of using XA transactions with the resources managed by WebLogic server.</p>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(149, 219, 65);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/">Tools</a></li><li><a href="/writings/1">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Spring JMS and JPA XA Transactions with WebLogic</h1><p class="date_14b9dxr">Posted on 02/26/2019</p><div class="summary_14b9dxr"><p>This article shows the configuration of using XA transactions with the resources managed by WebLogic server.</p>
 </div><article><p>There are three parts of configurations for this XA transactions to work - JMS, JPA and JTA. Both JMS and JPA are acquired through the JNDI registry and the XA transaction manager implementation uses the one from the WebLogic server. This configuration relies on WebLogic server. The concept should be similar and applicable to other JEE application servers. With these configurations, we could easily use <code>@Transactional</code> annotation on the services for XA transactions.</p>
 <h3>
   <a id="-code-jmsconfiguration-java-code-excerpt" class="anchor" aria-hidden="true" href="#-code-jmsconfiguration-java-code-excerpt">
@@ -123,7 +123,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></pre>  
 </pre></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts/2019/02/spring-jms-and-jpa-xa-transactions-with-weblogic/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.330e90ac.js"></script>
+  <script type="module" src="/index.cfb5e8a9.js"></script>
 </body>
 </html>
 
