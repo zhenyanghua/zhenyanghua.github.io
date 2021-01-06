@@ -3,7 +3,7 @@ import { formatTime } from "../../utils/time";
 import { useAnchor, useTitle } from "../../utils/dom";
 import style from './style.module.css';
 
-const gitRoot = 'https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts';
+const gitRoot = 'https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts';
 
 export default function Post ({ children, title, date, summary }) {
   useTitle(title);
