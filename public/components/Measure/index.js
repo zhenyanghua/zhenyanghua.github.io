@@ -1,6 +1,7 @@
 import style from './style.module.css';
-import { useEffect, useRef } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import {injectScript} from "../../utils/dom";
+import MapPlaceholder from "../MapPlaceholder";
 
 const gmapsApiKey = 'AIzaSyBTdH3AFSWLD3SrgbNqTGoRsg3U6W0qAAg';
 
@@ -84,99 +85,79 @@ const segments = [
 export default function Measure() {
   const mapRef = useRef(null);
   const measureTool = useRef(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [measureOn, setMeasureOn] = useState(false);
 
-  const start = () => {
+  const initMap = async () => {
+    const isApiLoaded = Array.from(document.head.querySelectorAll('script')).some(x => x.src.includes(gmapsApiKey));
+    if (!isApiLoaded) {
+      await injectScript(`https://maps.googleapis.com/maps/api/js?key=${gmapsApiKey}&libraries=geometry`);
+      await injectScript(`https://unpkg.com/measuretool-googlemaps-v3`);
+    }
+
+    const map = new window.google.maps.Map(mapRef.current, {
+      center,
+      zoom: 9,
+      clickableIcons: false,
+      disableDefaultUI: true,
+      disableDoubleClickZoom: true,
+      gestureHandling: 'none',
+      draggable: false
+    });
+    measureTool.current = new window.MeasureTool(map, {
+      contextMenu: false,
+      unit: 'IMPERIAL'
+    });
+    measureTool.current.start(segments);
+
+    const findTags = (node, tag, found) => {
+      if (node.nodeName.toUpperCase() === tag.toUpperCase()) {
+        found.push(node);
+        return;
+      }
+      if (node.childList && node.childList.length > 0) {
+        for (const child of node.childList) {
+          findTags(child, found);
+        }
+      }
+    }
+    setTimeout(() => {
+      let tabbable = Array.from(mapRef.current.querySelectorAll('a'));
+      tabbable = tabbable.concat(Array.from(mapRef.current.querySelectorAll('[tabindex="0"]')));
+      tabbable.forEach(node => node.setAttribute('tabindex', "-1"));
+    }, 2000);
+  };
+
+  const start = async () => {
+    if (!mapLoaded) {
+      await initMap();
+      setMapLoaded(true);
+    }
     if (measureTool.current) {
-      measureTool.current.start([center]);
+      measureTool.current.start(segments);
+      setMeasureOn(true);
     }
   };
 
   const stop = () => {
     if (measureTool.current) {
       measureTool.current.end();
+      setMeasureOn(false);
     }
   };
 
   useEffect(() => {
-    let intersectionObs;
-    let mutationObs;
-    let map;
-
-    const initMap = async () => {
-      const isApiLoaded = Array.from(document.head.querySelectorAll('script')).some(x => x.src.includes(gmapsApiKey));
-      if (!isApiLoaded) {
-        await injectScript(`https://maps.googleapis.com/maps/api/js?key=${gmapsApiKey}&libraries=geometry`);
-        await injectScript(`https://unpkg.com/measuretool-googlemaps-v3`);
-      }
-      if (!map) {
-        map = new window.google.maps.Map(mapRef.current, {
-          center,
-          zoom: 9,
-          clickableIcons: false,
-          disableDefaultUI: true,
-          disableDoubleClickZoom: true,
-          gestureHandling: 'none',
-          draggable: false
-        });
-        measureTool.current = new window.MeasureTool(map, {
-          contextMenu: false,
-          unit: 'IMPERIAL'
-        });
-        measureTool.current.start(segments);
-
-        const findTags = (node, tag, found) => {
-          if (node.nodeName.toUpperCase() === tag.toUpperCase()) {
-            found.push(node);
-            return;
-          }
-          if (node.childList && node.childList.length > 0) {
-            for (const child of node.childList) {
-              findTags(child, found);
-            }
-          }
-        }
-        setTimeout(() => {
-          let tabbable = Array.from(mapRef.current.querySelectorAll('a'));
-          tabbable = tabbable.concat(Array.from(mapRef.current.querySelectorAll('[tabindex="0"]')));
-          tabbable.forEach(node => node.setAttribute('tabindex', "-1"));
-        }, 2000);
-      }
-    };
-
-    if (mapRef.current) {
-      // start loading the google maps script when this section enters 25% threshold
-      const obsOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.25
-      };
-      intersectionObs = new IntersectionObserver(entries => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            initMap();
-          }
-        }
-      }, obsOptions);
-      intersectionObs.observe(mapRef.current);
-    }
-
     return () => {
-      if (intersectionObs) {
-        intersectionObs.disconnect();
-      }
-      if (mutationObs) {
-        mutationObs.disconnect();
-      }
-      if (measureTool.current) {
-        measureTool.current.end();
-      }
+      stop();
     }
   }, []);
 
   return (
     <section id="measure" class={style.host}>
       <div class={style.mapsection} tab-index="-1">
-        <div class={style.map} ref={mapRef}></div>
+        <div class={style.map} ref={mapRef}>
+          {!mapLoaded && <MapPlaceholder onClick={start} />}
+        </div>
       </div>
       <div class={style.instruction}>
         <h2>
@@ -189,8 +170,8 @@ export default function Measure() {
           The functionalities are implemented as close as to what current Google Maps offers.
         </p>
         <div>
-          <button onClick={start}>start</button>
-          <button onClick={stop}>stop</button>
+          {!measureOn ? <button onClick={start}>start the measure</button> :
+          <button onClick={stop}>stop the measure</button>}
         </div>
         <codeblock-light class={style.codeblock}>
           <style>{codeStyles}</style>

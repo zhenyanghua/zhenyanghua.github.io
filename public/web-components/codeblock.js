@@ -29,6 +29,7 @@ function registerCodeblock () {
       }`: ''}
       code[class*="language-"], pre[class*="language-"] {
         text-shadow: none;
+        font-size: 16px;
       }
     </style>
     <div class="codeblock"></div>

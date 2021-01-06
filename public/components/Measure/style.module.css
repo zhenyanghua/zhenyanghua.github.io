@@ -1,17 +1,18 @@
 .host {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .mapsection {
-  height: 400px;
   width: 100%;
-  background-color: rgb(172, 219, 254);
 }
 
 .map {
-  height: 100%;
+  height: 400px;
   width: 100%;
+  background-color: rgb(172, 219, 254);
 }
 
 .instruction {
@@ -37,7 +38,10 @@
     flex-wrap: nowrap;
   }
   .mapsection {
-    height: auto;
     width: 400px;
+    padding: 20px;
+  }
+  .instruction {
+    min-height: 470px;
   }
 }

@@ -42,7 +42,7 @@ function createRenderer() {
     return indent`
       <div class="codeblock">
         <pre class="language-${infostring}">${highlighted}</pre>  
-      </pre>`;
+      </div>`;
   };
   renderer.heading = (text, level, raw, slugger) => {
     const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
@@ -58,6 +58,7 @@ function createRenderer() {
 let postRoutes = [];
 const outDir = '../public/posts';
 const renderer = createRenderer();
+marked.use({ renderer })
 
 fs.rmdirSync(outDir, { recursive: true, force: true });
 
@@ -72,8 +73,8 @@ years.forEach(year => {
       const excerptSeparator = '<!-- Excerpt End -->';
       const { data, content, excerpt } = matter(mdFile, { excerpt_separator: excerptSeparator });
       const contentWithoutExcerpt = content.substring(excerpt.length + excerptSeparator.length);
-      const summary = marked(excerpt, { renderer }).replace(/`/g, '\\`');
-      const html = marked(contentWithoutExcerpt, { renderer }).replace(/`/g, '\\`');
+      const summary = marked(excerpt).replace(/`/g, '\\`');
+      const html = marked(contentWithoutExcerpt).replace(/`/g, '\\`');
       // todo - inject meta data to header
       const template = indent`
         /**
