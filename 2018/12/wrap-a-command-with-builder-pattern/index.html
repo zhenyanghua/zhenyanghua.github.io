@@ -5,9 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Zhenyang Hua</title>
-  <link rel="stylesheet" href="/assets/global.5d0386ac.css">
-<link rel="stylesheet" href="/assets/style.module.edc5e2a1.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(236, 252, 95);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/">Tools</a></li><li><a href="/writings/1">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Wrap A Command with Builder Pattern</h1><p class="date_14b9dxr">Posted on 12/19/2018</p><div class="summary_14b9dxr"><p>This article shows a well-designed way to wrap a command and expose it through API with the classic Builder pattern. In this tutorial, you will learn how to write the Builder pattern, and how to direct standard output stream and standard error stream from the command to the input stream of your API.</p>
+  <link rel="stylesheet" href="/assets/global.374079e1.css">
+<link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(40, 245, 252);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Wrap A Command with Builder Pattern</h1><p class="date_14b9dxr">Posted on 12/19/2018</p><div class="summary_14b9dxr"><p>This article shows a well-designed way to wrap a command and expose it through API with the classic Builder pattern. In this tutorial, you will learn how to write the Builder pattern, and how to direct standard output stream and standard error stream from the command to the input stream of your API.</p>
 </div><article><p>In a scenario that we have this command line application that will send some information to a server developed using some exotic framework or in a completely a different programming language, which increase the difficulty to reference it directly in your client application. It is used so often in the integration test that you feel the strong need to convert it to an API so that your projects could use it directly from your code without the knowledge on what exactly the correct command line is to have it send the correct information. If this scenario is too complicated for you, let&#39;s just say you want to run a command that execute a jar file with some command line arguments. Usually, you would do something like this:</p>
 <div class="codeblock">
   <pre>java -jar hello-world.jar --foo=bar</pre>
@@ -33,7 +33,7 @@
                 totalDecommissioned<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token class-name">Process</span> process <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span>cmd<span class="token punctuation">)</span><span class="token punctuation">;</span></pre>  
-</pre><p>This is a good start because we already start to externalize the key parameters to provide limit flexibility to the client. In the above example, there are many configurable properties needs to be passed in from the client. We could have just created a number of setters with an empty argument constructor leave the rest to the client, but we are better than this. There are two improvements we could do.</p>
+</div><p>This is a good start because we already start to externalize the key parameters to provide limit flexibility to the client. In the above example, there are many configurable properties needs to be passed in from the client. We could have just created a number of setters with an empty argument constructor leave the rest to the client, but we are better than this. There are two improvements we could do.</p>
 <ol>
 <li><p>Use Builder Pattern for Object Creation. A classic way to implement the Builder pattern is to use a nested class (static inner class) and make the constructor of the class of the object you want to build private. This way, we could assign default values to the optional parameters and enforce required parameters through the Builder constructor.</p>
 </li>
@@ -170,7 +170,7 @@
         <span class="token keyword">this</span><span class="token punctuation">.</span>totalDecommissioned <span class="token operator">=</span> builder<span class="token punctuation">.</span>totalDecommissioned<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></pre>  
-</pre><p>Finally, by using the Builder pattern, we tremendously simplified the client&#39;s action to use the wrapped command. Here is the usage:</p>
+</div><p>Finally, by using the Builder pattern, we tremendously simplified the client&#39;s action to use the wrapped command. Here is the usage:</p>
 <div class="codeblock">
   <pre class="language-java"><span class="token class-name">MeterSimulator</span> meterSimulator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MeterSimulator<span class="token punctuation">.</span>Builder</span><span class="token punctuation">(</span>METER_SIMULATOR_PATH<span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">withManufacture</span><span class="token punctuation">(</span><span class="token string">"Zebra"</span><span class="token punctuation">)</span>
@@ -179,8 +179,8 @@
                 <span class="token punctuation">.</span><span class="token function">withTotalDecommissioned</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 meterSimulator<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre>  
-</pre></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts/2018/12/wrap-a-command-with-builder-pattern/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.cfb5e8a9.js"></script>
+</div></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/articles/posts/2018/12/wrap-a-command-with-builder-pattern/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
+  <script type="module" src="/index.49c22517.js"></script>
 </body>
 </html>
 
