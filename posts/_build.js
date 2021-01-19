@@ -75,14 +75,20 @@ years.forEach(year => {
       const contentWithoutExcerpt = content.substring(excerpt.length + excerptSeparator.length);
       const summary = marked(excerpt).replace(/`/g, '\\`');
       const html = marked(contentWithoutExcerpt).replace(/`/g, '\\`');
+      const scripts = Array.from(html.matchAll(/<script[\s\S]*?>([\s\S]*?)<\/script>/gi)).map(x => x[1].trim());
       // todo - inject meta data to header
       const template = indent`
         /**
          * Generated source
          * @author Zhenyang Hua
          */
+        import { useEffect } from 'preact/hooks';
         import Post from '../../../../components/Post';
+        const scripts = ${JSON.stringify(scripts)};
         export default function() {
+          useEffect(() => {
+            scripts.forEach(script => new Function(script)());
+          }, []);
           return (
             <Post {...${JSON.stringify(data)}} summary={\`${summary}\`}>
               <article dangerouslySetInnerHTML={{__html: \`${html}\`}} />
