@@ -19,8 +19,25 @@ new year's resolution list. *This is the way* how I managed to get myself unders
 ## Package-lock.json visualizer
 
 <style>
+.control {
+  display: flex;
+}
+.control label {
+  margin-right: 10px;
+}
+.control input {
+  flex: 1 1 auto;
+}
 #visualizer {
+  position: relative;
   border: brown solid 2px;
+}
+#zoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 text {
 	font-weight: 300;
@@ -40,6 +57,10 @@ path {
 	stroke-width: 1px;
 }
 </style>
+<div class="control">
+  <label for="url">Package-lock.json URL</label>
+  <input id="url" type="text" value="https://gist.githubusercontent.com/mbostock/3a87eff4c752341faa485a29d4459b52/raw/910e72da4e154ed95d69e76ca763f383b2888c34/package-lock.json"/>
+</div>
 <button id="draw">Draw</button>
 <div id="visualizer"></div>
 <script>
@@ -59,13 +80,12 @@ path {
     return p;
   }
   async function draw() {
-    const exampleUrl = 'https://gist.githubusercontent.com/mbostock/3a87eff4c752341faa485a29d4459b52/raw/910e72da4e154ed95d69e76ca763f383b2888c34/package-lock.json';
     await Promise.all([
       injectScript("https://unpkg.com/d3@6.3.1/dist/d3.min.js"),
       injectScript("https://www.unpkg.com/dagre-d3@0.6.4/dist/dagre-d3.js"),
       injectScript("https://cdn.jsdelivr.net/gh/zhenyanghua/node-semver@browser/semver.min.js")
     ]);
-    const root = await fetch(exampleUrl).then(res => res.json());
+    const root = await fetch(document.querySelector('#url').value).then(res => res.json());
     const g = new dagreD3.graphlib.Graph({ directed: true, compound: true, multigraph: true })
       .setGraph({ rankdir: 'LR' })
       .setDefaultEdgeLabel(() => ({}));
@@ -104,7 +124,10 @@ path {
       define(name, module);
     }
     d3.select('#visualizer svg').remove();
-    const svg = d3.select('#visualizer').append('svg');
+    d3.select('#visualizer').append('div').attr('id', 'zoom').text('Click to enable zoom');
+    const svg = d3.select('#visualizer').append('svg').attr('tabindex', '0')
+      .on('click', zoom)
+      .on('keydown', e => { if (['Enter', ' '].includes(e.key)) zoom() });
     const group = svg.append('g');
     const render = new dagreD3.render();
     render(group, g);
@@ -112,17 +135,16 @@ path {
     const w = g.graph().width + 40;
     const h = g.graph().height + 40;
     svg.attr('viewBox', [0, 0, w, h]);
-    svg.call(d3.zoom().extent([[0, 0], [w, h]])
-      .scaleExtent([0.3, 3])
-      .on("zoom", zoomed));
-    function zoomed({transform}) {
-      group.attr("transform", transform);
+    function zoom() {
+      d3.select('#zoom').remove();
+      svg.call(d3.zoom().extent([[0, 0], [w, h]])
+        .scaleExtent([1, 3])
+        .on("zoom", ({transform}) => {
+          group.attr("transform", transform);
+        }));
     }
   }
-  document.querySelector('#draw').addEventListener('click', function () {
-    console.debug('clicked');
-    draw();
-  });
+  document.querySelector('#draw').addEventListener('click', draw);
 })();
 </script>
 
