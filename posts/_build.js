@@ -76,7 +76,8 @@ years.forEach(year => {
       const summary = marked(excerpt).replace(/`/g, '\\`');
       const html = marked(contentWithoutExcerpt).replace(/`/g, '\\`');
       const scripts = Array.from(html.matchAll(/<script[\s\S]*?>([\s\S]*?)<\/script>/gi)).map(x => x[1].trim());
-      // todo - inject meta data to header
+      // todo - optimization - transpile each script to es5 and bundle using babel and a bundler?
+      // todo - SEO - inject meta data to header
       const template = indent`
         /**
          * Generated source
