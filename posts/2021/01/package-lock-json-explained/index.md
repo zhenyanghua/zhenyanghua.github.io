@@ -1,5 +1,5 @@
 ---
-title: 'Package-lock.json Exaplained' 
+title: 'Package-lock.json Explained' 
 date: '2021-01-18 17:00:00'
 ---
 Since the introduction of the `package-lock.json` file from NPM, I never had a good grasp of it which lead to my
