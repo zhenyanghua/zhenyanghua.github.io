@@ -153,7 +153,7 @@ path {
     visualizer.append(loading);
     await Promise.all([
       injectScript("https://unpkg.com/d3@6.3.1/dist/d3.min.js"),
-      injectScript("https://www.unpkg.com/dagre-d3@0.6.4/dist/dagre-d3.js"),
+      injectScript("https://www.unpkg.com/dagre-d3@0.6.4/dist/dagre-d3.min.js"),
       injectScript("https://cdn.jsdelivr.net/gh/zhenyanghua/node-semver@browser/semver.min.js")
     ]);
     const root = await fetch(document.querySelector('#url').value).then(res => res.json());
@@ -204,7 +204,7 @@ path {
     const group = svg.append('g');
     const render = new dagreD3.render();
     render(group, g);
-    loading.remove();
+    d3.selectAll('#loading').remove();
     group.attr('transform', 'translate(0, 100)');
     const w = g.graph().width + 40;
     const h = g.graph().height + 40;
