@@ -7,7 +7,7 @@
 	<title>Zhenyang Hua</title>
   <link rel="stylesheet" href="/assets/global.374079e1.css">
 <link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(55, 238, 4);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Override Enum Methods with Constant Specific Class Body</h1><p class="date_14b9dxr">Posted on 11/20/2018</p><div class="summary_14b9dxr"><p>This article shows one advanced technique when using enums - constant specific class body.</p>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(172, 236, 157);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Override Enum Methods with Constant Specific Class Body</h1><p class="date_14b9dxr">Posted on 11/20/2018</p><div class="summary_14b9dxr"><p>This article shows one advanced technique when using enums - constant specific class body.</p>
 </div><article><p>Enum is a specialized class whose instances are created and managed completely by JVM. So we should never invoke constructors of an enum, otherwise there might be a meltdown of the JVM, and fortunately, our loyal friend compiler always help us catching the error before it happens. Most of the time we use enum for two purposes -- to create either singleton or a list of predefined enumerable list.</p>
 <p>Given the following scenario, create an enum of currency that is supported by a vending machine, we might end up with the following enum:</p>
 <div class="codeblock">
@@ -118,7 +118,7 @@
     <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token class-name">String</span> <span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></pre>  
 </div></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2018/11/override-enum-methods-with-constant-specific-class-body/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.6bfbde13.js"></script>
+  <script type="module" src="/index.f947002b.js"></script>
 </body>
 </html>
 
