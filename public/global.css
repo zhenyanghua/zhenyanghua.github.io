@@ -20,6 +20,13 @@ html, body {
   width: 100%;
 }
 
+table {
+  width: 100%;
+}
+td {
+  text-align: center;
+}
+
 *:not(code):not(span):not(button):not(a) {
   font-family: 'EB Garamond', serif;
   color: var(--black);
