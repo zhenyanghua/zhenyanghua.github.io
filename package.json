@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm run posts && wmr",
     "build": "npm run posts && wmr build --prerender",
+    "postbuild": "node ./postprerender.js",
     "posts": "node ./posts/_build.js",
     "serve": "wmr serve --http2",
     "predeploy": "npm run build",

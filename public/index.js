@@ -17,6 +17,8 @@ if (typeof window !== 'undefined') {
 }
 
 export async function prerender(data) {
-  const { default: prerender } = await import('preact-iso/prerender')
+  const { default: prerender } = await import('preact-iso/prerender');
+  const fs = require('fs');
+  fs.appendFileSync('routes.txt', data.url + '\n');
   return prerender(<App {...data} />)
 }

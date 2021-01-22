@@ -56,6 +56,7 @@ function createRenderer() {
 }
 
 let postRoutes = [];
+let postMeta = {};
 const outDir = '../public/posts';
 const renderer = createRenderer();
 marked.use({ renderer })
@@ -78,6 +79,8 @@ years.forEach(year => {
       const scripts = Array.from(html.matchAll(/<script[\s\S]*?>([\s\S]*?)<\/script>/gi)).map(x => x[1].trim());
       // todo - optimization - transpile each script to es5 and bundle using babel and a bundler?
       // todo - SEO - inject meta data to header
+      // Idea - post prerender - create a list of {url, title, meta} and write to a file.
+      // create another step after this build to traverse the list and update the html with the content.
       const template = indent`
         /**
          * Generated source
@@ -111,6 +114,10 @@ years.forEach(year => {
         date: new Date(data.date).getTime(),
         route
       });
+      postMeta[url] = {
+        title: data.title,
+        summary: summary.replace(/<\/?\w+>/, '')
+      };
     });
   });
 });
@@ -205,3 +212,7 @@ fs.writeFileSync(
 );
 
 
+// createa a post temp data for post prerendering injection
+fs.writeFileSync('../postMeta.js', `module.exports=${JSON.stringify(postMeta)};`);
+
+exports.indent = indent;
