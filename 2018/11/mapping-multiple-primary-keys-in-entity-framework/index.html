@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ9YVRG232"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-WQ9YVRG232');
+</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Zhenyang Hua</title>
+	<meta name="description" content="This tip shows one simple solution to allow multiple primary keys mapping in entities.</p>
+">
+<title>Mapping Multiple Primary Keys in Entity Framework - Zhenyang Hua</title>
   <link rel="stylesheet" href="/assets/global.374079e1.css">
 <link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(186, 232, 249);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Mapping Multiple Primary Keys in Entity Framework</h1><p class="date_14b9dxr">Posted on 11/29/2018</p><div class="summary_14b9dxr"><p>This tip shows one simple solution to allow multiple primary keys mapping in entities.</p>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(200, 210, 82);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Mapping Multiple Primary Keys in Entity Framework</h1><p class="date_14b9dxr">Posted on 11/29/2018</p><div class="summary_14b9dxr"><p>This tip shows one simple solution to allow multiple primary keys mapping in entities.</p>
 </div><article><p>When a datatable has multiple keys, the entity framework by default gets confused for mapping the primary keys. By assigning an <code>Order</code> value to the <code>Column</code> attribute when mapping the primary keys solves this problem. This <code>Order</code> value should be in the same order as these columns appear in the datatable.</p>
 <div class="codeblock">
   <pre>using System.ComponentModel.DataAnnotations;
@@ -31,7 +40,7 @@ namespace LeafyJava.Models
     }
 }</pre>
 </div></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2018/11/mapping-multiple-primary-keys-in-entity-framework/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.56f0e896.js"></script>
+  <script type="module" src="/index.6ab6836d.js"></script>
 </body>
 </html>
 
