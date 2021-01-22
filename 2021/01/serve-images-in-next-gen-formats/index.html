@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ9YVRG232"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-WQ9YVRG232');
+</script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="description" content="Serving smaller images without sacrificing the resolution quality could be finally achieved
+with the next-gen formats. This article introduces three common next-gen formats and a tip
+to have fallback images when the browser doesn&#39;t support those.</p>
+">
+<title>Serve Images in Next-gen Formats - Zhenyang Hua</title>
+  <link rel="stylesheet" href="/assets/global.b7aadc62.css">
+<link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(19, 243, 144);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Serve Images in Next-gen Formats</h1><p class="date_14b9dxr">Posted on 01/22/2021</p><div class="summary_14b9dxr"><p>Serving smaller images without sacrificing the resolution quality could be finally achieved
+with the next-gen formats. This article introduces three common next-gen formats and a tip
+to have fallback images when the browser doesn&#39;t support those.</p>
+</div><article><h2>
+  <a id="browser-compatibility" class="anchor" aria-hidden="true" href="#browser-compatibility">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Browser compatibility</h2><table>
+<thead>
+<tr>
+<th>format</th>
+<th>Chrome</th>
+<th>FireFox</th>
+<th>Edge</th>
+<th>Safari</th>
+<th>IE11</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://caniuse.com/webp" target="_blank">WebP</a></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr>
+<td><a href="https://caniuse.com/avif" target="_blank">AVIF</a></td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr>
+<td><a href="https://caniuse.com/jpeg2000" target="_blank">Jpeg 2000</a></td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td><a href="https://caniuse.com/jpegxr" target="_blank">Jpeg XR</a></td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+<h2>
+  <a id="fallback" class="anchor" aria-hidden="true" href="#fallback">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Fallback</h2><p>Based on the majority of the browsers support WebP format, we could default to
+use webp format for all images and set up fallback for universal Jpeg format.</p>
+<h3>
+  <a id="html-img-element-fallback" class="anchor" aria-hidden="true" href="#html-img-element-fallback">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>HTML <img> element fallback</h3><div class="codeblock">
+  <pre class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>image description<span class="token punctuation">"</span></span> 
+     <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>image.webp<span class="token punctuation">"</span></span> 
+     <span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>this.src=image.jpg<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></pre>  
+</div><h3>
+  <a id="css-background-image-fallback" class="anchor" aria-hidden="true" href="#css-background-image-fallback">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>CSS background image fallback</h3><div class="codeblock">
+  <pre class="language-css"><span class="token comment">/* default fallback when 'image-set()' is not supported */</span>
+<span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'image.jpg'</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span>
+<span class="token comment">/* default to AVIF and if not supported, try WebP, etc.. */</span>
+<span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token function">image-set</span><span class="token punctuation">(</span> 
+  <span class="token string">"image.avif"</span> <span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"image/avif"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  
+  <span class="token string">"image.webp"</span> <span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"image/webp"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token string">"image.jp2"</span>  <span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"image/jp2"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token string">"image.jxr"</span>  <span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"image/jxr"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token string">"image.jpg"</span>  <span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"image/jpeg"</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></pre>  
+</div></article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2021/01/serve-images-in-next-gen-formats/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
+  <script type="module" src="/index.dcb55f61.js"></script>
+</body>
+</html>
+
