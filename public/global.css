@@ -4,7 +4,9 @@
   --deepBlue: #013640;
   --lighterBlue: aliceblue;
   --bg: white;
+  --warmBg: #f6f5f5;
   --black: black;
+  --lighterRed: #ffcdcd;
   --darkerRed: #BF1722;
   --maxWidth: 1280px;
 }
@@ -22,10 +24,35 @@ html, body {
 
 table {
   width: 100%;
+  border-spacing: 0;
+}
+th, td {
+  border: 1px solid var(--lighterRed);
+  padding: 6px;
+}
+th:not(:first-child), td:not(:first-child) {
+  border-left: none;
 }
 td {
   text-align: center;
+  border-top: none;
 }
+th:first-child {
+  border-top-left-radius: 4px;
+}
+th:last-child {
+  border-top-right-radius: 4px;
+}
+tr:last-child > td:first-child {
+  border-bottom-left-radius: 4px;
+}
+tr:last-child > td:last-child {
+  border-bottom-right-radius: 4px;
+}
+tr:nth-child(2n) {
+  background-color: var(--warmBg);
+}
+
 
 *:not(code):not(span):not(button):not(a) {
   font-family: 'EB Garamond', serif;

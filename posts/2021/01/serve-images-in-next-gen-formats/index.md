@@ -9,7 +9,7 @@ to have fallback images when the browser doesn't support those.
 
 ## Browser compatibility
 
-|format|Chrome|FireFox|Edge|Safari|IE11|
+|Format|Chrome|FireFox|Edge|Safari|IE11|
 |---|---|---|---|---|---|
 |<a href="https://caniuse.com/webp" target="_blank">WebP</a>|Y|Y|Y|N|N|
 |<a href="https://caniuse.com/avif" target="_blank">AVIF</a>|Y|Y|N|N|N|

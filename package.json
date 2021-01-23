@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": "true",
   "scripts": {
-    "start": "npm run posts && wmr",
+    "start": "wmr",
     "build": "npm run posts && wmr build --prerender",
     "postbuild": "node ./postprerender.js",
     "posts": "node ./posts/_build.js",
