@@ -15,7 +15,13 @@ const inDir = path.join(__dirname, 'dist');
 const routesText = fs.readFileSync(path.join(__dirname, 'routes.txt'), "utf8");
 const routes = routesText.trim().split('\n')
 const meta = require('./postMeta');
+const sitemapUrls = [];
 for (const url of routes) {
+  sitemapUrls.push(indent`
+  <url>
+    <loc>https://zhenyanghua.github.io${url}</loc>
+  </url>`);
+
   let inject;
 
   // inject meta right before title and update title
@@ -49,10 +55,13 @@ for (const url of routes) {
 }
 
 // Generate sitemap.txt
-fs.copyFileSync(
-  path.join(__dirname, 'routes.txt'),
-  path.join(__dirname, 'dist', 'sitemap.txt')
-);
+const sitemap = indent`
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.join('\n')}
+</urlset>
+`
+fs.writeFileSync(path.join(__dirname, 'dist', 'sitemap.xml'), sitemap);
 
 // Remove temporary files
 rmFilesSync([
