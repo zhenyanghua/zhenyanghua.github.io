@@ -3,6 +3,14 @@ const path = require('path');
 process.chdir(__dirname);
 const {indent} = require('./posts/_build');
 
+function rmFilesSync(files) {
+  for (const file of files) {
+    if (fs.existsSync(file)) {
+      fs.rmSync(file);
+    }
+  }
+}
+
 const inDir = path.join(__dirname, 'dist');
 const routesText = fs.readFileSync(path.join(__dirname, 'routes.txt'), "utf8");
 const routes = routesText.trim().split('\n')
@@ -40,14 +48,13 @@ for (const url of routes) {
   fs.writeFileSync(file, html);
 }
 
-function rmFilesSync(files) {
-  for (const file of files) {
-    if (fs.existsSync(file)) {
-      fs.rmSync(file);
-    }
-  }
-}
+// Generate sitemap.txt
+fs.copyFileSync(
+  path.join(__dirname, 'routes.txt'),
+  path.join(__dirname, 'dist', 'sitemap.txt')
+);
 
+// Remove temporary files
 rmFilesSync([
   path.join(__dirname, 'routes.txt'),
   path.join(__dirname, 'postMeta.js')
