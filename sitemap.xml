@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>https://zhenyanghua.github.io/</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/writings/1</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/writings/5</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/writings/2</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2021/01/serve-images-in-next-gen-formats</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2021/01/package-lock-json-explained</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2020/12/scope-limited-codeblock-web-component</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2020/10/npm-dependency-vs-devdependency</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2019/04/distributed-transaction-management-with-rest-and-try-confirm-cancel-pattern</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2019/02/spring-jms-and-jpa-xa-transactions-with-weblogic</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2019/01/recursively-move-a-directory</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2019/01/creating-a-library-project-for-spring-boot</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/12/wrap-a-command-with-builder-pattern</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/mapping-multiple-primary-keys-in-entity-framework</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/writings/4</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/behavioral-patterns-chain-of-responsibility-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/behavioral-patterns-command-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/behavioral-patterns-iterator-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/behavioral-patterns-mediator-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/add-model-attributes-to-layout-template</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/spring-transactional-propagation-type</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/05/spring-transactional-isolation-level</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/04/dependency-injection-and-inversion-of-control</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/04/spring-data-substitutes-objectmapper</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/04/java-servlet-cors-filter-with-preflight-options</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/writings/3</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/override-enum-methods-with-constant-specific-class-body</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/reload-configurations-from-spring-cloud-config</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/webmethods-implicit-and-explicit-transaction-management</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/how-to-setup-elk-stack-with-docker-for-development</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/ie-wont-set-cookie</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/serialize-timestamp-to-epochsecond-with-jackson</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/pass-parameters-to-the-executiveservice-adapter</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/11/docker-useful-commands</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/overwriting-spring-security-context-through-filter</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/spring-data-mongodb-gridfs-3-4</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/08/useful-file-java-io-mini-api</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/08/java-8-time-package-and-locale</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/08/load-and-store-properties-file</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/08/locale-and-resource-bundles</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/07/behavioral-patterns-visitor-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/07/behavioral-patterns-template-method-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/07/behavioral-patterns-strategy-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-state-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-memento-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-observer-pattern-exercise</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/handle-non-encoded-request-url</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/postgresql-and-hibernate-clob</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/spring-data-repository-query-precedence-tricks</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/tomcat-invalid-character-in-request</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/batch-patterns-in-webmethods</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/entity-graphs-for-lazy-loading</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/entity-mapping-with-inheritance-in-hibernate</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/10/exception-handling-in-webmethods</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/09/building-an-efficient-cache</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2018/09/java-basic-serialization</loc>
+</url>
+</urlset>
