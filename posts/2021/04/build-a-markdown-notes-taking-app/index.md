@@ -18,24 +18,25 @@ This article describes the path taken to build a POC of a markdown notes taking 
 1. Users should be able to import the exported file and restore all the notes with any images included.
 
 ## Step 2 - identify technical challenge and possible dependencies
-1. > 1. A basic markdown editor that consume standard markdown syntax and output nice structure content
+> A basic markdown editor that consume standard markdown syntax and output nice structure content
 
 - We need a markdown parser that can parse standard markdown string to HTML string ([marked](https://www.npmjs.com/package/marked)).
 - We may need to define our own styles for the generate HTML string but we may as well explore if there is any existing standard markdown CSS available from NPM ([github-markdown-css](https://www.npmjs.com/package/github-markdown-css)).
 
-1. > 1. Users should be able to paste in any images from the standard clipboard from any operating system.
+> Users should be able to paste in any images from the standard clipboard from any operating system.
 - We need to access the data from the clipboard.
 - Checking combo keys (<kbd>Ctrl</kbd> + <kbd>v</kbd>, <kbd>Cmd</kbd> + <kbd>v</kbd>, <kbd>Context</kbd>, right click paste, etc.) could be endless when we may not know what custom paste key binding are used in users' operating system.
 - [HTMLElement.onpaste](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/onpaste) is an `EventHandler` that signals when a paste event is triggered from the clipboard.
 - [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) comes in handy, where we don't need to worry about how to obtain the data pasted from the `onpaste` event as it provides an interface to detect data types and content from the clipboard.
 
-1. > 1. Users should be able to save their notes and images
+> Users should be able to save their notes and images
 - We need to serialize the users' input in some form and persist it in a store so they will be there after a page is refreshed. Browsers have plenty storages options, e.g. `LocalStorage`, `IndexedDB`. However, `LocalStorage` can only stores up to 5MB per app per browser, which may cap even just one note with many large images pasted in. [`IndexedDB` ](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) comes in handy.
 - Image serialization could be usually done through the `canvas` API where we could obtain the base64 image string from the Blob and then save it to the store. The deserialization is only a matter of decoding the base64 image back to `Blob`. However, with the `IndexedDB`, which supports `Blob` data type out-of-the-box, we could store the image directly as `Blob`.
 - `IndexedDB` comes with a pretty verbose API and we could use an library that provides a simplified abstract layer. ([Dexie](https://www.npmjs.com/package/dexie))
 
-1. > 1. Users should be able to export all their notes to a file
-> 1. Users should be able to import the exported file and restore all the notes with any images included.
+> Users should be able to export all their notes to a file
+
+> Users should be able to import the exported file and restore all the notes with any images included.
 - We need to be able to export all notes from the `IndexedDB` to a file
 - We could either export a dump of the current version of the local database or we could create a custom format that only exports the notes and images saved in the database.
 - If we use a custom format and exports only the notes and images saved, we need to also import them and bulk load them to their tables. If we use features from `Dexie`, we could use the addon [dexie-export-import](https://www.npmjs.com/package/dexie-export-import) to do the export/import for the entire database.
