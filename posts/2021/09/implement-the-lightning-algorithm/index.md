@@ -2,7 +2,7 @@
 title: 'Implement the Lightning Algorithm'
 date: '2021-09-15 09:27:00'
 ---
-I was entertaining myself with the excellent video interviews from the NumberPhile project, a lightning algorithm interview from the creator of the visualization of the algorithm clearly explained the techniques used behind the scene. The explanation was so clear and the visualization was so satisfying that I felt impetuous to implement it. A few hours later, the moment of thought became realized. Here sharing a few steps that I learned from the interview and while implementing it. 
+I was entertaining myself with the excellent video interviews from the Numberphile project, a lightning algorithm interview from the creator of the visualization of the algorithm clearly explained the techniques used behind the scene. The explanation was so clear and the visualization was so satisfying that I felt impetuous to implement it. A few hours later, the moment of thought became realized. Here sharing a few steps that I learned from the interview and while implementing it. 
 <!-- Excerpt End -->
 
 ## The Demo
@@ -310,3 +310,51 @@ function warn() {
 }
 })()
 </script>
+
+## Generate a maze
+
+We start by creating a grid that shows only points so that we could connect them based on a certain probability.
+
+![Grid base](!grid-base.png)
+
+We will then create walls in the grid. The lightning algorithm is to mimic how a lightning strike travels - from top to bottom. To make sure in most of the time, our maze provides a path from top to bottom, horizontal walls should be fewer than the vertical walls. To get there, we need to create a utility function to control the probability interval.
+
+```javascript
+/**
+ * Predicate function that is determined by probability.
+ * @param very {boolean}
+ *  indicates a higher probability when true
+ * @return {boolean}
+ */
+function lucky(very = false) {
+    return Math.floor(Math.random() * (very ? 8 : 6)) + 1 <= 4;
+}
+```
+
+In the above `lucky(very)` function, we create probability that is 4/8 when low and 4/6 when high;
+
+![There are more vertical walls then horizontal walls](!generate-walls.png)
+
+## Solve a maze
+
+Solving a maze is as simple as a breadth first search algorithm. With the use of a queue, we could carry out the search one level at a time. We can imagine there is a pseudo root node above the first row with `step = 0`, for each adjacent cell that is not blocked by walls, we could mark them as the next step until we get to the bottom of the maze if the bottom doesn't have a wall. 
+
+![Maze with steps marked](!walls-steps-marked.png)
+
+Finally we backtrack the path:
+
+![Backtracked path](!backtracked.png)
+
+![Solved path](!solved.png)
+
+## Animate it
+
+We could fill visited cells by classification based on the steps it takes to get to them (the depth of the node), but if the maze is very long, the screen will eventually and most likely full of colored cells. In the original algorithm, only the most recent few steps are shown and this is what we will be doing here as well. We create a color ramp that shows only the last few steps with gradience. When we get to the bottom of it, clear all the transitional cells and draw the lightning bolt with some cool color. 
+
+![Lightning moving downwards](!moving.png)
+
+![Lightning touches ground](!bolt.png)
+
+## Lightning algorithm video interview
+
+To get inspired, try the Numberphile project which hosts [the original interview](https://youtu.be/akZ8JJ4gGLs).
