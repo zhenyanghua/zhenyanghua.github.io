@@ -71,7 +71,7 @@ In this section, I only mention the snippets from the above mentioned API, for t
           // find the cursor position and insert
           // FIXME - the "Cut" command doesn't seem to be working
           textarea.value = textarea.value.slice(0, textarea.selectionStart) 
-              // + `![Image - ${new Date().toLocaleString('en-US')}](bid:${blobId}:${url})` 
+              + "![Image - " + new Date().toLocaleString('en-US') + "](bid:" + blobId + ":" + url")" 
               + textarea.value.slice(textarea.selectionStart + 1);
           parse(textarea.value);
         });
@@ -89,7 +89,7 @@ In this section, I only mention the snippets from the above mentioned API, for t
     const replacedData = data.replaceAll(/(\!\[.*\]\(bid:(\d+):)(.*)(\))/gi, (m, p1, p2, p3, p4) => {
       const image = images.find(x => x.id === Number(p2));
       const url = URL.createObjectURL(image.data);
-      // return `${p1}${url}${p4}`;
+      return "" + p1 + url + p4;
     });
     textarea.value = replacedData;
     parse(replacedData);

@@ -61,7 +61,9 @@ const outDir = '../public/posts';
 const renderer = createRenderer();
 marked.use({ renderer })
 
-fs.rmdirSync(outDir, { recursive: true, force: true });
+if (fs.existsSync(outDir)) {
+  fs.rmSync(outDir, { recursive: true, force: true });
+}
 
 const years = fs.readdirSync('.').filter(x => !x.startsWith("_"));
 years.forEach(year => {
