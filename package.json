@@ -9,14 +9,15 @@
     "posts": "node ./posts/_build.js",
     "serve": "wmr serve --http2",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "slide": "node ./slide.js"
   },
   "author": "Zhenyang Hua",
   "devDependencies": {
     "escape-html": "^1.0.3",
     "gh-pages": "^3.1.0",
     "gray-matter": "^4.0.2",
-    "marked": "^2.0.0",
+    "marked": "^3.0.4",
     "prismjs": "^1.24.0",
     "wmr": "^1.0.0"
   },
