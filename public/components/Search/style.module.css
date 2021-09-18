@@ -22,6 +22,11 @@
   border: 1px solid transparent;
   border-radius: 2px;
   padding: 2px 4px;
+  cursor: pointer;
+}
+
+.search li:hover {
+  background-color: var(--lighterBlue);
 }
 
 .searchBox {

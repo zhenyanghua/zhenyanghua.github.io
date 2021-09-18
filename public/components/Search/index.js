@@ -51,19 +51,16 @@ export default function Search({ posts }) {
     }, [selectedIndex]);
 
     return (
-        <div class={style.search}>
+        <div class={style.search} onKeyDown={handleKeyDown} onBlur={handleBlur}>
             <div class={style.searchBox}>
                 <label for="search">Search Article</label>
-                <input id="search" type="text" value={term} 
-                    onInput={handleChange}
-                    onKeyDown={handleKeyDown} 
-                    onBlur={handleBlur} />
+                <input id="search" type="text" value={term} onInput={handleChange} />
             </div>
             <ul class={activeIndex === null || !matches[activeIndex] ? style.hidden : ''}>
                 {matches.map(post => 
                     <li key={post.url} 
                     class={activeIndex !== null && matches[activeIndex] && post.url === matches[activeIndex].url ? style.active : ''}
-                    onClick={() => goTo(post.url)}>{post.title}</li>)}
+                    onClick={() => { console.debug('clicked'); goTo(post.url);}}>{post.title}</li>)}
             </ul>
         </div>
     );
