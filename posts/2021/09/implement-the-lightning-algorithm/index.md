@@ -5,41 +5,17 @@ date: '2021-09-15 09:27:00'
 I was entertaining myself with the excellent video interviews from the Numberphile project, a lightning algorithm interview from the creator of the visualization of the algorithm clearly explained the techniques used behind the scene. The explanation was so clear and the visualization was so satisfying that I felt impetuous to implement it. A few hours later, the moment of thought became realized. Here sharing a few steps that I learned from the interview and while implementing it. 
 <!-- Excerpt End -->
 
-<button id="demo-fullscreen">Presentation Mode</button>
-
 <style>
-    .section:fullscreen {
-        width: 100%;
-        height: 100%;
-        background-color: wheat;
-        padding: 100px;
-        font-size: 32px;
-    }
-    .section:not(:fullscreen) .demo-controls {
-        display: none;
-    }
-
-    .section:fullscreen .demo-controls {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-    }
-
-    .section:fullscreen .flex {
+    .slide:fullscreen .flex {
         display: flex;
     }
 
-    .section:fullscreen .flex > * {
+    .slide:fullscreen .flex > * {
         margin: 0 20px;
     }
 </style>
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 ## The Demo
 <style>
@@ -355,14 +331,9 @@ function warn() {
 })()
 </script>
 
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 ## Generate a maze
 
@@ -370,14 +341,9 @@ We start by creating a grid that shows only points so that we could connect them
 
 ![Grid base](!grid-base.png)
 
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 We will then create walls in the grid. The lightning algorithm is to mimic how a lightning strike travels - from top to bottom. To make sure in most of the time, our maze provides a path from top to bottom, horizontal walls should be fewer than the vertical walls. To get there, we need to create a utility function to control the probability interval.
 
@@ -401,14 +367,9 @@ In the above `lucky(very)` function, we create probability that is 4/8 when low 
 
 </div>
 
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 ## Solve a maze
 
@@ -416,14 +377,9 @@ Solving a maze is as simple as a breadth first search algorithm. With the use of
 
 ![Maze with steps marked](!walls-steps-marked.png)
 
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 Finally we backtrack the path:
 
@@ -435,14 +391,9 @@ Finally we backtrack the path:
 
 </div>
 
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 ## Animate it
 
@@ -455,50 +406,15 @@ We could fill visited cells by classification based on the steps it takes to get
 ![Lightning touches ground](!bolt.png)
 
 </div>
-</div>
+!---
 
-<div class="section">
-
-<div class="demo-controls">
-    <button class="controls controls-prev">Previous</button>
-    <button class="controls controls-next">Next</button>
-</div>
+!---
 
 ## Lightning algorithm video interview
 
 To get inspired, try the Numberphile project which hosts [the original interview](https://youtu.be/akZ8JJ4gGLs).
 
-</div>
+!---
 
-<script>
-(function() {
-    const btnFullscreen = document.getElementById('demo-fullscreen');
-    const btnPrev = [...document.querySelectorAll('.controls-prev')];
-    const btnNext = [...document.querySelectorAll('.controls-next')];
-    const sections = [...document.querySelectorAll('.section')];
 
-    let currentSectionIndex = 0;
-    btnFullscreen.addEventListener('click', () => {
-        sections[currentSectionIndex].requestFullscreen();
-    });
-    btnPrev.forEach(btn => btn.addEventListener('click', prev))
-    btnNext.forEach(btn => btn.addEventListener('click', next))
-
-    document.addEventListener('keydown', e => {
-        if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('section')) {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
-            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
-        }
-    });
-
-    function next() {
-        currentSectionIndex = currentSectionIndex === sections.length - 1 ? currentSectionIndex : currentSectionIndex + 1;
-        sections[currentSectionIndex].requestFullscreen();
-    }
-
-    function prev() {
-        currentSectionIndex = currentSectionIndex === 0 ? 0 : currentSectionIndex - 1;
-        sections[currentSectionIndex].requestFullscreen();
-    }
-})()
-</script>
+!--!

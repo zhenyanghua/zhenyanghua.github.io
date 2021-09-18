@@ -23,6 +23,124 @@ function indent(strings, ...keys) {
   return result.replace('\n', '');
 }
 
+// const content = 
+// "!---\nSlide 1\n!---\n" +
+// "!---\nSlide 2\n!---\n";
+
+const slide = {
+  name: 'slide',
+  level: 'block',
+  start(src) { 
+      return src.match(/\!---[\s]/)?.index; 
+  },
+  tokenizer(src, tokens) {
+      const rule = /^(\!---\s((\s(?!\!---)|.(?!\!---))*)(?!\!---)\s+\!---(?:\s|$))/;
+      const match = rule.exec(src);
+      if (match) {
+          const token = {
+              type: 'slide',
+              raw: match[0],
+              text: match[2].trim(),
+              tokens: []
+          };
+          this.lexer.blockTokens(token.text, token.tokens);
+          return token;
+      }
+  },
+  renderer(token) {
+      return indent`
+          <div class="slide">
+              <div class="slide-controls">
+                  <button class="controls controls-prev">Previous</button>
+                  <button class="controls controls-next">Next</button>
+              </div>
+              ${this.parser.parse(token.tokens)}
+          </div>
+          `;
+  }
+}
+
+// !--!
+
+const presentation = {
+  name: 'presentation',
+  level: 'inline',
+  start(src) { 
+      return src.match(/\!--\!/)?.index; 
+  },
+  tokenizer(src, tokens) {
+      const rule = /^(\!--\!)(?:\s|$)/;
+      const match = rule.exec(src);
+      if (match) {
+          const token = {
+              type: 'presentation',
+              raw: match[0],
+              text: match[0],
+              tokens: []
+          };
+          return token;
+      }
+  },
+  renderer(token) {
+      return indent`
+          <style>
+              .slide:fullscreen {
+                  width: 100%;
+                  height: 100%;
+                  background-color: wheat;
+                  padding: 100px;
+                  font-size: 32px;
+              }
+              .slide:not(:fullscreen) .slide-controls {
+                  display: none;
+              }
+          
+              .slide:fullscreen .slide-controls {
+                  position: fixed;
+                  top: 10px;
+                  right: 10px;
+              }
+          </style>
+          <button title="This article has a presentation mode, click to start, press ESC key to exit" id="presentation">
+          🖼️ Presentation Mode
+          </button>
+          <script>
+          (function() {
+            const btnPresentation = document.getElementById('presentation');
+            const btnPrev = [...document.querySelectorAll('.controls-prev')];
+            const btnNext = [...document.querySelectorAll('.controls-next')];
+            const slides = [...document.querySelectorAll('.slide')];
+
+            let currentSlideIndex = 0;
+            btnPresentation.addEventListener('click', () => {
+              currentSlideIndex = 0;
+              slides[currentSlideIndex].requestFullscreen();
+            });
+            btnPrev.forEach(btn => btn.addEventListener('click', prev))
+            btnNext.forEach(btn => btn.addEventListener('click', next))
+
+            document.addEventListener('keydown', e => {
+              if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('slide')) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+              }
+            });
+
+            function next() {
+              currentSlideIndex = currentSlideIndex === slides.length - 1 ? currentSlideIndex : currentSlideIndex + 1;
+              slides[currentSlideIndex].requestFullscreen();
+            }
+
+            function prev() {
+              currentSlideIndex = currentSlideIndex === 0 ? 0 : currentSlideIndex - 1;
+              slides[currentSlideIndex].requestFullscreen();
+            }
+          })();
+          </script>
+          `;
+  }
+}
+
 function createRenderer(pathname) {
   const renderer = new marked.Renderer();
   // FIXME - codeblock hierarchy is nested, it should be flat.
@@ -82,7 +200,7 @@ years.forEach(year => {
     posts.forEach(post => {
       const pathname = path.join(year, month, post);
       const renderer = createRenderer(pathname);
-      marked.use({ renderer })
+      marked.use({ renderer, extensions : [slide, presentation] });
       const mdFile = fs.readFileSync(path.join(pathname, 'index.md'), 'utf8');
       const url = `/${year}/${month}/${post}`;
       const excerptSeparator = '<!-- Excerpt End -->';
