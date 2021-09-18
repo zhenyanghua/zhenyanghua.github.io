@@ -347,4 +347,5 @@ fs.writeFileSync(
 // createa a post temp data for post prerendering injection
 fs.writeFileSync('../postMeta.js', `module.exports=${JSON.stringify(postMeta)};`);
 
+
 exports.indent = indent;
