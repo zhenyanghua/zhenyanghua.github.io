@@ -22,14 +22,19 @@ I was entertaining myself with the excellent video interviews from the Numberphi
     #demo-canvas {
         background: #020c21;
     }
+    #demo-buttons button {
+        width: 100px;
+        font-size: 1em;
+    }
 </style>
 
 <canvas id="demo-canvas" width="500px" height="500px"></canvas>
-<div>
-<button id="demo-reset">New Maze</button>
-<button id="demo-solve">Solve</button>
-<button id="demo-animate">Animate</button>
-<button id="demo-again">Play New</button>
+<div id="demo-buttons">
+    <button id="demo-reset">New Maze</button>
+    <button id="demo-solve">Solve</button>
+    <button id="demo-resume">Resume</button>
+    <button id="demo-pause" hidden>Pause</button>
+    <button id="demo-step">Step Over</button>
 </div>
 
 <script>
@@ -40,43 +45,52 @@ const GRID_HEIGHT = 48;
 const TEMPO = 20;
 const BACKGROUND = '#020c21';
 const FOREGROUND = '#FFFF96';
-const MAX_LAST_STEPS = 10;
+const MAX_LAST_STEPS = 15;
 const OFFSET = CELL_SIZE;
 
 const canvas = document.getElementById('demo-canvas');
 const btnReset = document.getElementById('demo-reset');
 const btnSolve = document.getElementById('demo-solve');
-const btnAnimate = document.getElementById('demo-animate');
-const btnAgain = document.getElementById('demo-again');
+const btnResume = document.getElementById('demo-resume');
+const btnPause = document.getElementById('demo-pause');
+const btnStep = document.getElementById('demo-step');
 const ctx = canvas.getContext('2d');
 
-let walls;
 let path = [];
-
-walls = generateMaze();
+let solver;
+let timer;
+let walls = generateMaze();
 
 btnReset.addEventListener('click', () => {
+    btnPause.click();
     clear();
     walls = generateMaze();
 });
 
 btnSolve.addEventListener('click', () => {
-    run();
-})
+    solve();
+});
 
-btnAnimate.addEventListener('click', () => {
-    run(true)
-})
+btnResume.addEventListener('click', () => {
+    btnResume.hidden = true;
+    btnPause.hidden = false;
+    resume();
+});
 
-btnAgain.addEventListener('click', () => {
-    clear();
-    walls = generateMaze();
-    run(true)
-})
+btnPause.addEventListener('click', () => {
+    btnPause.hidden = true;
+    btnResume.hidden = false;
+    pause();
+});
+
+btnStep.addEventListener('click', () => {
+    stepOver();
+});
 
 // Generate a maze
 function generateMaze() {
     path = [];
+    solver = undefined;
     const set = new Set();
     for (let y = 0; y <= GRID_HEIGHT; y++) {
         for (let x = 0; x <= GRID_WIDTH; x++) {
@@ -94,10 +108,10 @@ function generateMaze() {
     return set;
 }
 
-async function solve(animate) {
+function* doSolve(animate) {
     clearAllNodes();
     const visited = new Map();
-    let lastStep = 1;
+    let lastStep = 0;
     // solve the maze - BFS
     const queue = [];
     // 1. pretend there is a root node that is just one row above the first row,
@@ -112,9 +126,11 @@ async function solve(animate) {
                 parent: undefined,
                 parentEdge: buildKey(x, 0, x + 1, 0)
             };
-            queue.push(node);
+            // queue.push(node);
+            createNodeIfNotVisited(node);
         }
     }
+
     // 2. For each node in the queue,
     // to determine whether a node has any children, check the walls set to see if
     // three other sides have walls, for each side that doesn't have a wall, create
@@ -124,7 +140,11 @@ async function solve(animate) {
         if (animate) {
             // when it gets to the next depth, redraw all nodes based on classification
             if (lastStep < node.step) {
-                lastStep = await drawNodes(visited);
+                // lastStep = await drawNodes(visited);
+                lastStep = [...visited.values()]
+                    .map(node => node.step)
+                    .reduce((prev, curr) => curr > prev ? curr : prev, 0);
+                yield { lastStep, visited };
             }
         }
         const {x, y, step, parentEdge} = node;
@@ -203,18 +223,78 @@ async function solve(animate) {
 // when queue is empty, restart the program.
 }
 
-async function run(animate) {
-    clearPath(path);
-    let winningNode = await solve(animate);
-    if (winningNode) {
-        path = [];
-        while (winningNode) {
-            path.push([winningNode.x, winningNode.y]);
-            winningNode = winningNode.parent;
+/**
+ * The solver generator consumer that does the drawing for each yield 
+ * and relay the generator state.
+ * @returns if the generator is done.
+ */
+async function doStepOver() {
+    const result = solver.next();
+    if (!result.done) {
+        if (result.value) {
+            const { visited, lastStep } = result.value;
+            visited.forEach(node => {
+                drawNodeByStep(node, lastStep);
+            })
         }
-        drawCenterLine(path)
     } else {
-        warn();
+        btnReset.disabled = true;
+        await drawPathBackTrack(result.value);
+        // dispose
+        solver = undefined;
+        timer = undefined;
+        // restore UI state
+        btnPause.hidden = true;
+        btnResume.hidden = false;
+    }
+    return result.done;
+}
+
+async function run(animate) {
+    if (!solver) {
+        clearPath(path);
+        solver = doSolve(animate);
+    }
+    if (!(await doStepOver())) {
+        timer = setTimeout(async () => { await run(animate) }, TEMPO);
+    }
+}
+
+async function solve() {
+    btnSolve.disabled = true;
+    btnReset.disabled = true;
+    pause();
+    clearPath(path);
+    solver = doSolve(false);
+    await doStepOver();
+    btnSolve.disabled = false;
+    btnReset.disabled = false;
+}
+
+function resume() {
+    // disallow resume when it is not paused.
+    if (!timer) {
+        run(true);
+    }
+}
+
+function pause() {
+    if (timer) {
+        clearTimeout(timer);
+        timer = undefined;
+    }
+}
+
+async function stepOver() {
+    if (!solver) {
+        clearPath(path);
+        solver = doSolve(true);
+    }
+    // disallow step over when is not paused.
+    if (!timer) {
+        btnStep.disabled = true;
+        await doStepOver();
+        btnStep.disabled = false;
     }
 }
 
@@ -226,19 +306,39 @@ function drawLine(x1, y1, x2, y2) {
     ctx.stroke();
 }
 
-function drawCenterLine(path, clear = false) {
+async function drawCenterLine(path, clear = false) {
+    // draw the path from bottom to top
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = clear ? BACKGROUND : FOREGROUND;
     ctx.beginPath();
     for (let i = 0; i < path.length; i++) {
         const point = [OFFSET + (path[i][0] + 1 / 2) * CELL_SIZE, OFFSET + (path[i][1] + 1 / 2) * CELL_SIZE];
         if (i === 0) {
-            ctx.moveTo(...point);
+            // draw the bottom end
+            ctx.moveTo(point[0], point[1] + CELL_SIZE / 2);
+        }
+
+        if (clear) {
+            ctx.lineTo(...point)
+            ctx.stroke();
         } else {
-            ctx.lineTo(...point);
+            // animate the lightening travel from ground back to the sky
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    ctx.lineTo(...point)
+                    ctx.stroke();
+                    resolve();
+                }, TEMPO / 1000);
+            });
+        }
+
+        // draw the top end
+        if (i === path.length - 1) {
+            ctx.lineTo(point[0], point[1] - CELL_SIZE / 2)
+            ctx.stroke();
         }
     }
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = clear ? BACKGROUND : FOREGROUND;
-    ctx.stroke();
+
     ctx.lineWidth = 1;
 }
 
@@ -272,6 +372,23 @@ function drawNodeByStep(node, maxStep) {
     ctx.fillStyle = maxStep - node.step < MAX_LAST_STEPS ? "rgba(255, 255, 150, " + (1 - (maxStep - node.step) / MAX_LAST_STEPS) + ")" : BACKGROUND;
     ctx.fill();
     ctx.fillStyle = 'white';
+}
+
+async function drawPathBackTrack(node) {
+    let winningNode = node
+    
+    if (winningNode) {
+        path = [];
+        while (winningNode) {
+            path.push([winningNode.x, winningNode.y]);
+            winningNode = winningNode.parent;
+        }
+        await drawCenterLine(path)
+        clearPath(path);
+        await drawCenterLine(path)
+    } else {
+        warn();
+    }
 }
 
 function clearNodes(nodes) {
