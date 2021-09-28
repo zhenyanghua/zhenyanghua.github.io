@@ -1,0 +1,4 @@
+.textHighlight {
+  background-color: var(--highlight);
+  border-radius: 6px;
+}
