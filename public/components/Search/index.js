@@ -1,5 +1,6 @@
 import style from './style.module.css';
 import { useEffect, useState } from 'preact/hooks';
+import TextHighlight from '../TextHighlight';
 
 export default function Search({ posts }) {
     const [term, setTerm] = useState('');
@@ -56,11 +57,13 @@ export default function Search({ posts }) {
                 <label for="search">Search Article</label>
                 <input id="search" type="text" value={term} onInput={handleChange} />
             </div>
-            <ul class={activeIndex === null || !matches[activeIndex] ? style.hidden : ''}>
+            <ul class={activeIndex === null || !matches[activeIndex] || !term.trim() ? style.hidden : ''}>
                 {matches.map(post => 
                     <li key={post.url} 
-                    class={activeIndex !== null && matches[activeIndex] && post.url === matches[activeIndex].url ? style.active : ''}
-                    onClick={() => { console.debug('clicked'); goTo(post.url);}}>{post.title}</li>)}
+                        class={activeIndex !== null && matches[activeIndex] && post.url === matches[activeIndex].url ? style.active : ''}
+                        onClick={() => { goTo(post.url);}}>
+                        <TextHighlight match={term}>{post.title}</TextHighlight>
+                    </li>)}
             </ul>
         </div>
     );
