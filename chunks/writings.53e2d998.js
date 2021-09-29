@@ -1,1 +1,0 @@
-import{m as t,j as i}from"../index.950db7b4.js";import"./time.daaab1ba.js";import{W as r}from"./index.35a9dc92.js";export default function(){return t`<${r} posts=${i} page=${{current:5,total:6,prev:"/writings/4",next:"/writings/6",last:"/writings/6",first:"/writings/1"}}/>`}
