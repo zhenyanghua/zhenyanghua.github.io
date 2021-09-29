@@ -55,7 +55,7 @@ export default function Search({ posts }) {
         <div class={style.search} onKeyDown={handleKeyDown} onBlur={handleBlur}>
             <div class={style.searchBox}>
                 <label for="search">Search Article</label>
-                <input id="search" type="text" value={term} onInput={handleChange} />
+                <input id="search" type="text" autocomplete="off" value={term} onInput={handleChange} />
             </div>
             <ul class={activeIndex === null || !matches[activeIndex] || !term.trim() ? style.hidden : ''}>
                 {matches.map(post => 
