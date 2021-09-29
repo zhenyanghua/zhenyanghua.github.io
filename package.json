@@ -6,8 +6,8 @@
   "scripts": {
     "start": "wmr",
     "build": "npm run posts && wmr build --prerender",
-    "postbuild": "node ./postprerender.js",
-    "posts": "node ./posts/_build.js",
+    "postbuild": "node ./postprerender.cjs",
+    "posts": "node ./posts/_build.cjs",
     "serve": "wmr serve --http2",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
