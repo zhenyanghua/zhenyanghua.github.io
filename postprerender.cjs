@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 process.chdir(__dirname);
-const {indent} = require('./posts/_build');
+const {indent} = require('./posts/_build.cjs');
 
 function rmFilesSync(files) {
   for (const file of files) {
@@ -14,7 +14,7 @@ function rmFilesSync(files) {
 const inDir = path.join(__dirname, 'dist');
 const routesText = fs.readFileSync(path.join(__dirname, 'routes.txt'), "utf8");
 const routes = routesText.trim().split('\n')
-const meta = require('./postMeta');
+const meta = require('./postMeta.cjs');
 const sitemapUrls = [];
 for (const url of routes) {
   sitemapUrls.push(indent`
@@ -66,5 +66,5 @@ fs.writeFileSync(path.join(__dirname, 'dist', 'sitemap.xml'), sitemap);
 // Remove temporary files
 rmFilesSync([
   path.join(__dirname, 'routes.txt'),
-  path.join(__dirname, 'postMeta.js')
+  path.join(__dirname, 'postMeta.cjs')
 ]);
