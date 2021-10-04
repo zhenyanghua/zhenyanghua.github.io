@@ -2,7 +2,7 @@
 title: 'Efficient Text Highlighter'
 date: '2021-10-02 19:38:00'
 ---
-When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex replacement with `innerHTML`, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. 
+When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex positive lookahead, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. 
 <!-- Excerpt End -->
 
 <style>
@@ -47,7 +47,24 @@ When I built the search blog post feature of this site, there is a nice visual e
   const green = '#4caf5096';
   const blue = '#2196f37a';
   const pink = '#f436e5';
-    function visualizeArray({ containerSelector, array, highlights, pointers }) {
+  function mapColor(array) {
+    array.forEach((item) => {
+      switch(item.color) {
+        case 'red':
+          item.color = red;
+          break;
+        case 'blue':
+          item.color = blue;
+          break;
+        case 'green':
+          item.color = green;
+          break;
+        case 'pink':
+          item.color = pink;
+      }
+    });
+  }
+  function visualizeArray({ containerSelector, array, highlights, pointers }) {
     const containers = document.querySelectorAll(containerSelector);
     Array.from(containers).forEach(container => {
       let _highlights = highlights;
@@ -63,22 +80,11 @@ When I built the search blog post feature of this site, there is a nice visual e
       }
       if (!_highlights && container.hasAttribute('data-highlights')) {
         _highlights = JSON.parse(container.getAttribute('data-highlights'));
-        _highlights.forEach((highlight) => {
-          switch(highlight.color) {
-            case 'red':
-              highlight.color = red;
-              break;
-            case 'blue':
-              highlight.color = blue;
-              break;
-            case 'green':
-              highlight.color = green;
-              break;
-          }
-        });
+        mapColor(_highlights);
       }
       if (!_pointers && container.hasAttribute('data-pointers')) {
         _pointers = JSON.parse(container.getAttribute('data-pointers'));
+        mapColor(_pointers);
       }
       if (_array) {
         container.innerHTML = _array.map((x, i) => {
@@ -91,7 +97,7 @@ When I built the search blog post feature of this site, there is a nice visual e
             }
           }
           let pointerStyle = '';
-          if (_pointers && pointers.some(p => p.index === i)) {
+          if (_pointers && _pointers.some(p => p.index === i)) {
             const { index, color } = _pointers.find(p => p.index === i);
             pointerStyle = 'outline-color: ' + color + ';';
           }
@@ -107,7 +113,7 @@ When I built the search blog post feature of this site, there is a nice visual e
     let m = pattern.length;
     let n = text.length;
     const lps = new Array(m);
-    preProcess(lps, pattern);
+    preProcess(lps, pattern, false).next();
     // point to the text
     let i = 0;
     // point to the pattern
@@ -141,16 +147,22 @@ When I built the search blog post feature of this site, there is a nice visual e
     }
     return { i, j, result };
   }
-  function preProcess(lps, pattern) {
+  function* preProcess(lps, pattern, stepover) {
     let len = 0;
     let i = 1;
     lps[0] = 0;
     while(i < lps.length) {
       if (pattern.charAt(i) === pattern.charAt(len)) {
+        if (stepover) {
+          yield { len, i };
+        }
         lps[i] = len + 1;
         len++;
         i++;
       } else {
+        if (stepover) {
+          yield { len, i, mismatch: true };
+        }
         if (len !== 0) {
           len = lps[len - 1];
         } else {
@@ -166,11 +178,136 @@ When I built the search blog post feature of this site, there is a nice visual e
   window.blue = blue;
   window.pink = pink;
   window.kmpSearch = kmpSearch;
+  window.preProcess = preProcess;
 </script>
 
-## Regex Replacement
+## Regex Positive Lookahead
+
+When search for pattern matching, it is possible to have overlapping characters that could be a potential match. For example, in the 
+
+**Pattern**
+
+<div class="array" data-array="onion"></div>
+
+**Search text**
+
+<div class="array" data-array="onionionions"></div>
+
+A regex like this `/onion/gi` will only result in two matches:
+
+<div class="array" data-array="onionionions" 
+  data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
+  data-pointers='[{ "index": 0, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
+
+We could tell there is an overlapping occurrence missing from these matches, to match such occurences, we need to ask regex to look ahead of each character before moving on to the next character, similar to the brute force approach from the next section. This technique is called **Positive Lookahead** in regex, and the expression is `(?=...)`. It asserts that the given subpattern can be matched here, without consuming characters. Now we update the regex to be `/(?=onion)/`, we will be getting the three matches including the overlapping one.
+
+<div class="array" data-array="onionionions" 
+  data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [3, 7], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
+  data-pointers='[{ "index": 0, "color": "pink" }, { "index": 3, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
 
 ## Brute force pattern matching
+
+The brute force approach is to examine the each following sequence matches the pattern characters for each character in the search text. 
+
+<label for="input-pat-naive">Pattern text</label>
+<input id="input-pat-naive" type="text" value="onions"/> 
+<div id="pat-naive-array" class="array"></div>
+
+<label for="input-search-naive">Search text</label>
+<input id="input-search-naive" type="text" value="onionions"/> 
+<div id="search-naive-array" class="array"></div>
+
+<div>
+  <button id="btn-stepper-naive">➡️Step over</button>
+</div>
+
+<script>
+let generatorNaive;
+const inputPatNaive = document.getElementById('input-pat-naive');
+const inputSearchNaive = document.getElementById('input-search-naive');
+const btnStepperNaive = document.getElementById('btn-stepper-naive');
+const reset = () => {
+  vsa({
+    containerSelector: '#pat-naive-array',
+    array: Array.from(inputPatNaive.value)
+  });
+  vsa({
+    containerSelector: '#search-naive-array',
+    array: Array.from(inputSearchNaive.value)
+  });
+  generatorNaive = searchNaive(inputPatNaive.value, inputSearchNaive.value);
+};
+reset();
+inputPatNaive.addEventListener('input', reset);
+inputSearchNaive.addEventListener('input', reset);
+btnStepperNaive.addEventListener('click', () => {
+  const { value, done } = generatorNaive.next();
+  if (!done) {
+    if (value !== undefined) {
+      const { i, j, mismatch, result } = value;
+      const matchedPointers = result.map(startIndex => ({ index: startIndex, color: blue }));
+      vsa({
+        containerSelector: '#pat-naive-array',
+        array: Array.from(inputPatNaive.value),
+        pointers: [{ index: j, color: pink}],
+        highlights: [{ range: [0, j], color: mismatch ? red : green }]
+      });
+      vsa({
+        containerSelector: '#search-naive-array',
+        array: Array.from(inputSearchNaive.value),
+        pointers: [{ index: i, color: pink}, ...matchedPointers],
+        highlights: [{ range: [i - j, i], color: mismatch ? red : green }]
+      });
+    }
+  } else {
+    const { result } = value;
+    const matchedHighlights = result.map(startIndex => ({ range: [startIndex, startIndex + inputPatNaive.value.length - 1], color: blue }));
+    const matchedPointers = result.map(startIndex => ({ index: startIndex, color: pink }));
+    vsa({ 
+      containerSelector: '#pat-naive-array',
+      array: Array.from(inputPatNaive.value),
+    });
+    vsa({ 
+      containerSelector: '#search-naive-array',
+      array: Array.from(inputSearchNaive.value),
+      highlights: matchedHighlights,
+      pointers: matchedPointers
+    });
+    // reset generator
+    generatorNaive = searchNaive(inputPatNaive.value, inputSearchNaive.value);
+  }
+});
+
+function* searchNaive(pattern, text) {
+  const result = [];
+  let i = 0, j = 0;
+  while (i < text.length) {
+    // what's left in the search text is shorter than the pattern text length
+    if (i === text.length - pattern.length + 1) {
+      yield { i, j, mismatch: true, result };
+      break;
+    }
+    let next = i;
+    while (text.charAt(next) === pattern.charAt(j)) {
+      yield { i: next, j, result };
+      next++;
+      j++
+      // match
+      if (j === pattern.length) {
+        result.push(i);
+        break;
+      }
+    }
+    // mismatch
+    if (j < pattern.length) {
+      yield { i: next, j, mismatch: true, result };
+    }
+    i++;
+    j = 0;
+  }
+  return { i, j, result };
+}
+</script>
 
 ## Knuth-Morris-Pratt text search algorithm
 
@@ -195,12 +332,65 @@ Now we have this preprocessed array that represent the longest prefix that is al
 
 **Pattern**
 
-<div class="array" data-array="onions"></div>
+<label for="input-pat-lps">Pattern text</label>
+<input id="input-pat-lps" type="text" value="onions"/> 
+<pre>
+<code>longest LPS length: <span id="len-pointer"></span></code>
+</pre>
+<div id="pat-lps-array" class="array"></div>
 
 **LPS**
 
-<div class="array" data-array="000120"></div>
+<div id="lps-array" class="array"></div>
 
+<div>
+  <button id="btn-stepper-1">➡️Step over</button>
+</div>
+
+<script>
+  let preProcessStepper;
+  let lps;
+  const btnStepper1 = document.getElementById('btn-stepper-1');
+  const inputPatLps = document.getElementById('input-pat-lps');
+  const spanLenPointer = document.getElementById('len-pointer');
+  const resetLps = () => {
+    lps = Array(inputPatLps.value.length).fill(0);
+    spanLenPointer.innerHTML = 0;
+    vsa({
+      containerSelector: '#pat-lps-array',
+      array: Array.from(inputPatLps.value)
+    });
+    vsa({
+      containerSelector: '#lps-array',
+      array: lps
+    });
+    preProcessStepper = preProcess(lps, inputPatLps.value, true);
+  };
+  resetLps();
+  btnStepper1.addEventListener('click', () => {
+    const { value, done } = preProcessStepper.next();
+    if (!done) {
+      if (value !== undefined) {
+        const { i, len, mismatch } = value;
+        vsa({
+          containerSelector: '#pat-lps-array',
+          array: Array.from(inputPatLps.value),
+          pointers: [{ index: i, color: pink }, { index: len, color: mismatch ? red : green }],
+          highlights: [{ range: [i, i], color: mismatch ? red : green }]
+        });
+        vsa({
+          containerSelector: '#lps-array',
+          array: lps,
+          pointers: [{ index: i, color: pink }]
+        });
+        spanLenPointer.innerHTML = len;
+      }
+    } else {
+      resetLps();
+    }
+  });
+  inputPatLps.addEventListener('input', resetLps);
+</script>
 
 Now, given a text `onionions` to search for the pattern, we got the matched
 
@@ -225,7 +415,7 @@ We create two pointers, one for the pattern, and one for the search text:
 <div id="search-array" class="array"></div>
 
 <div>
-  <button id="btn-stepper-1">Step over</button>
+  <button id="btn-stepper-2">➡️Step over</button>
 </div>
 
 As we step over the search, when there is a match, both pointers move forward. When there is a mismatch, the search text pointer **never** reset, whereas the pattern pointer will look up for the longest prefix that is also the suffix just before the mismatched character. Then, it will backtrack the pattern pointer to the `LPS` index of the previous matching substring sequence to skip all characters in such sequence that we know they have a match from the previous step. The intuition of how this logic works thanks to we know if the prefix of a sequence is exactly the same as its suffix, we could overlapping the matching substring of the sequence to skip the comparison. 
@@ -238,7 +428,7 @@ With a little help from this stepper, we could aparently observe that if we cons
   let searchStepper;
   const inputPat = document.getElementById('input-pat');
   const inputSearch = document.getElementById('input-search');
-  const btnNext = document.getElementById('btn-stepper-1');
+  const btnNext = document.getElementById('btn-stepper-2');
   inputPat.value = pattern;
   inputSearch.value = text;
   const reset = () => {
@@ -304,4 +494,34 @@ With a little help from this stepper, we could aparently observe that if we cons
   vsa({ containerSelector: '.array' });
 </script>
 
+## Visualization
 
+Once we have the array that indicates the starting index of each match, we could build the node sequence that represent the plain text and the highlighted text:
+
+```js
+const nodes = [];
+// i to track the start of the plain text
+let i = 0;
+// j to track the start of the highlight, in other words, the end of plain text
+let j = 0;
+
+while (i < children.length && j < matched.length) {
+    const matchingStartingIndex = matched[j];
+    const matchingEndingIndexExclusive = matched[j] + match.trim().length;
+    // plain text range [i, j)
+    const plainText = children.substring(i, matchingStartingIndex);
+    // highlight text range [m[j], m[j] + len(pattern))
+    const highlight = children.substring(matchingStartingIndex, matchingEndingIndexExclusive);
+    nodes.push(plainText);
+    nodes.push(<span class={style.textHighlight}>{highlight}</span>);
+    // move i to the letter after j's matching pattern
+    i = matchingEndingIndexExclusive;
+    // moveup j to read the next matching starting index
+    j++;
+}
+
+// tailing plain text
+if(i < children.length) {
+    nodes.push(children.substring(i));
+}
+```
