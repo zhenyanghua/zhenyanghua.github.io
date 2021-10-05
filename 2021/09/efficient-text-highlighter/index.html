@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ9YVRG232"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-WQ9YVRG232');
+</script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="description" content="When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex positive lookahead, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. </p>
+">
+<title>Efficient Text Highlighter - Zhenyang Hua</title>
+  <link rel="stylesheet" href="/assets/global.0c899d99.css">
+<link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(145, 255, 83);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Efficient Text Highlighter</h1><p class="date_14b9dxr">Posted on 10/02/2021</p><div class="summary_14b9dxr"><p>When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex positive lookahead, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. </p>
+</div><article><style>
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: consolas, monospace, sans-serif;
+    }
+    .array {
+      display: flex;
+      width: fit-content;
+      margin: 20px;
+    }
+    .item {
+      border: 4px solid black;
+      border-right: none;
+      width: 30px;
+      height: 30px;
+      padding: 4px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: consolas, monospace, sans-serif;
+    }
+    .item:last-child {
+      border-right: 4px solid black;
+    }
+    .item .pointer {
+      outline: 4px solid;
+      width: 100%;
+      height: 100%;
+    }
+    input {
+      font-size: 1em;
+    }
+</style>
+
+<script>
+  const red = '#e17474b0';
+  const green = '#4caf5096';
+  const blue = '#2196f37a';
+  const pink = '#f436e5';
+  function mapColor(array) {
+    array.forEach((item) => {
+      switch(item.color) {
+        case 'red':
+          item.color = red;
+          break;
+        case 'blue':
+          item.color = blue;
+          break;
+        case 'green':
+          item.color = green;
+          break;
+        case 'pink':
+          item.color = pink;
+      }
+    });
+  }
+  function visualizeArray({ containerSelector, array, highlights, pointers }) {
+    const containers = document.querySelectorAll(containerSelector);
+    Array.from(containers).forEach(container => {
+      let _highlights = highlights;
+      let _pointers = pointers;
+      let _array = array;
+      if (!_array && container.hasAttribute('data-array')) {
+        const arrString = container.getAttribute('data-array');
+        if (typeof arrString === 'string' && !/^[.*]$/.test(arrString)) {
+          _array = Array.from(arrString);
+        } else {
+          _array = JSON.parse(arrString);
+        }
+      }
+      if (!_highlights && container.hasAttribute('data-highlights')) {
+        _highlights = JSON.parse(container.getAttribute('data-highlights'));
+        mapColor(_highlights);
+      }
+      if (!_pointers && container.hasAttribute('data-pointers')) {
+        _pointers = JSON.parse(container.getAttribute('data-pointers'));
+        mapColor(_pointers);
+      }
+      if (_array) {
+        container.innerHTML = _array.map((x, i) => {
+          let style = '';
+          if (_highlights) {
+            for (let {range, color} of _highlights) {
+              if (range[0] <= i && range[1] >= i) {
+                style = 'background-color: ' + color + ';';
+              }
+            }
+          }
+          let pointerStyle = '';
+          if (_pointers && _pointers.some(p => p.index === i)) {
+            const { index, color } = _pointers.find(p => p.index === i);
+            pointerStyle = 'outline-color: ' + color + ';';
+          }
+          return '<div class="item center" style="' + style + '">' 
+            + (_pointers &&  pointerStyle ? ('<div class="pointer center" style="' + pointerStyle + '">' + x + '</div>') : x ) 
+            + '</div>'
+        }).join('');
+      }
+    });
+  }
+  function* kmpSearch(pattern, text) {
+    const result = [];
+    let m = pattern.length;
+    let n = text.length;
+    const lps = new Array(m);
+    preProcess(lps, pattern, false).next();
+    // point to the text
+    let i = 0;
+    // point to the pattern
+    let j = 0;
+    // this flag is informational to visualization only
+    let mismatch = false;
+    let mismatchedJ = j;
+    while (i < n) {
+      yield { i, j, result };
+      if (text.charAt(i) === pattern.charAt(j)) {
+        mismatch = false;
+        i++;
+        j++;
+      } else {
+        mismatch = true;
+        yield { i, j, result, mismatch };
+        if (j === 0) {
+          i++;
+        } else {
+          j = lps[j - 1];
+        }
+      }
+      // a pattern matching occurrence is found
+      if (j === m) {
+        if (j !== 0) {
+          result.push(i - j);
+          // reset j to account for overlapping
+          j = lps[j - 1];
+        }
+      }
+    }
+    return { i, j, result };
+  }
+  function* preProcess(lps, pattern, stepover) {
+    let len = 0;
+    let i = 1;
+    lps[0] = 0;
+    while(i < lps.length) {
+      if (pattern.charAt(i) === pattern.charAt(len)) {
+        if (stepover) {
+          yield { len, i };
+        }
+        lps[i] = len + 1;
+        len++;
+        i++;
+      } else {
+        if (stepover) {
+          yield { len, i, mismatch: true };
+        }
+        if (len !== 0) {
+          len = lps[len - 1];
+        } else {
+          lps[i] = 0;
+          i++;
+        }
+      }
+    }
+  }
+  window.vsa = visualizeArray;
+  window.red = red;
+  window.green = green;
+  window.blue = blue;
+  window.pink = pink;
+  window.kmpSearch = kmpSearch;
+  window.preProcess = preProcess;
+</script>
+
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <h2>
+  <a id="regex-positive-lookahead" class="anchor" aria-hidden="true" href="#regex-positive-lookahead">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Regex Positive Lookahead</h2><p>When search for pattern matching, it is possible to have overlapping characters that could be a potential match. For example, in the </p>
+<p><strong>Pattern</strong></p>
+<div class="array" data-array="onion"></div>
+
+<p><strong>Search text</strong></p>
+<div class="array" data-array="onionionions"></div>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p>A regex like this <code>/onion/gi</code> will only result in two matches:</p>
+<div class="array" data-array="onionionions" 
+  data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
+  data-pointers='[{ "index": 0, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p>We could tell there is an overlapping occurrence missing from these matches, to match such occurences, we need to ask regex to look ahead of each character before moving on to the next character, similarly to the brute force approach from the next section. This technique is called <strong>Positive Lookahead</strong> in regex, and the expression is <code>(?=...)</code>. It asserts that the given subpattern can be matched here, without consuming characters. Now we update the regex to be <code>/(?=onion)/</code>, we will be getting three matches including the overlapping one.</p>
+<div class="array" data-array="onionionions" 
+  data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [3, 7], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
+  data-pointers='[{ "index": 0, "color": "pink" }, { "index": 3, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <h2>
+  <a id="brute-force-pattern-matching" class="anchor" aria-hidden="true" href="#brute-force-pattern-matching">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Brute force pattern matching</h2><p>The brute force approach is to examine whether the following sequence matches the pattern characters for each character in the search text. </p>
+<p><label for="input-pat-naive">Pattern text</label>
+<input id="input-pat-naive" type="text" value="onions"/> </p>
+<div id="pat-naive-array" class="array"></div>
+
+<p><label for="input-search-naive">Search text</label>
+<input id="input-search-naive" type="text" value="onionions"/> </p>
+<div id="search-naive-array" class="array"></div>
+
+<div>
+  <button id="btn-stepper-naive">➡️Step over</button>
+</div>
+
+<script>
+let generatorNaive;
+const inputPatNaive = document.getElementById('input-pat-naive');
+const inputSearchNaive = document.getElementById('input-search-naive');
+const btnStepperNaive = document.getElementById('btn-stepper-naive');
+const reset = () => {
+  vsa({
+    containerSelector: '#pat-naive-array',
+    array: Array.from(inputPatNaive.value)
+  });
+  vsa({
+    containerSelector: '#search-naive-array',
+    array: Array.from(inputSearchNaive.value)
+  });
+  generatorNaive = searchNaive(inputPatNaive.value, inputSearchNaive.value);
+};
+reset();
+inputPatNaive.addEventListener('input', reset);
+inputSearchNaive.addEventListener('input', reset);
+btnStepperNaive.addEventListener('click', () => {
+  const { value, done } = generatorNaive.next();
+  if (!done) {
+    if (value !== undefined) {
+      const { i, j, mismatch, result } = value;
+      const matchedPointers = result.map(startIndex => ({ index: startIndex, color: blue }));
+      vsa({
+        containerSelector: '#pat-naive-array',
+        array: Array.from(inputPatNaive.value),
+        pointers: [{ index: j, color: pink}],
+        highlights: [{ range: [0, j], color: mismatch ? red : green }]
+      });
+      vsa({
+        containerSelector: '#search-naive-array',
+        array: Array.from(inputSearchNaive.value),
+        pointers: [{ index: i, color: pink}, ...matchedPointers],
+        highlights: [{ range: [i - j, i], color: mismatch ? red : green }]
+      });
+    }
+  } else {
+    const { result } = value;
+    const matchedHighlights = result.map(startIndex => ({ range: [startIndex, startIndex + inputPatNaive.value.length - 1], color: blue }));
+    const matchedPointers = result.map(startIndex => ({ index: startIndex, color: pink }));
+    vsa({ 
+      containerSelector: '#pat-naive-array',
+      array: Array.from(inputPatNaive.value),
+    });
+    vsa({ 
+      containerSelector: '#search-naive-array',
+      array: Array.from(inputSearchNaive.value),
+      highlights: matchedHighlights,
+      pointers: matchedPointers
+    });
+    // reset generator
+    generatorNaive = searchNaive(inputPatNaive.value, inputSearchNaive.value);
+  }
+});
+
+function* searchNaive(pattern, text) {
+  const result = [];
+  let i = 0, j = 0;
+  while (i < text.length) {
+    // what's left in the search text is shorter than the pattern text length
+    if (i === text.length - pattern.length + 1) {
+      yield { i, j, mismatch: true, result };
+      break;
+    }
+    let next = i;
+    while (text.charAt(next) === pattern.charAt(j)) {
+      yield { i: next, j, result };
+      next++;
+      j++
+      // match
+      if (j === pattern.length) {
+        result.push(i);
+        break;
+      }
+    }
+    // mismatch
+    if (j < pattern.length) {
+      yield { i: next, j, mismatch: true, result };
+    }
+    i++;
+    j = 0;
+  }
+  return { i, j, result };
+}
+</script>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <h2>
+  <a id="knuth-morris-pratt-text-search-algorithm" class="anchor" aria-hidden="true" href="#knuth-morris-pratt-text-search-algorithm">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Knuth-Morris-Pratt text search algorithm</h2><p>The above brute force algorithm in the worst case scenario, will run a comparison as long as the pattern string for every character in the search text, which has a time complexity of <code>O(N * M)</code> where <code>N</code> is the length of the search text, and <code>M</code> is the length of the pattern. KMP search algorithm elegantly utilizes the previous matching result and never moves the search cursor back and also skipped all the previous matched character for the next comparison. The essense here is to take advantage of the character sequence that are the prefix of the pattern also being the suffix of the pattern. Because of this, we could skip the comparison of the substring of the pattern that are both prefix and suffix of it, this way, given <code>M</code> &lt;&lt; <code>N</code>, for text matching where overlapping match may happen often, the times we need to reset the pattern search cursor is greatly reduced. </p>
+<p>To have the information of the character sequence that are both prefix and suffix of the pattern, we need to preprocess the pattern string so that we know the longest prefix that is also the suffix for each character. For now, let&#39;s assume such sequence doesn&#39;t include the entire sequence itself, and we will come back to it in a moment with an example to explain why we shouldn&#39;t consider the entire sequence itself as the longest prefix that is also the suffix. Sometimes people call such sequence - <code>LPS</code>, which stands for the longest proper prefix that is also the suffix in a given sequence.</p>
+
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p>For example:</p>
+<div class="array" data-array="onions"></div>
+
+<p>To preprocess the pattern <code>onions</code>, </p>
+<ol>
+<li>We first test for <code>o</code>, to see if it is both prefix and suffix, based on our assumption above, the entire sequence of <code>o</code> is not an <code>LPS</code>. so we mark it as <code>0</code>;</li>
+<li>We test for <code>on</code>, to see what&#39;s the LPS in there. <code>o</code> is the prefix, and <code>n</code> is the suffix, they are not the same, so there isn&#39;t an <code>LPS</code> in them, so we mark it as <code>0</code>;</li>
+<li>We test for <code>oni</code>, possible prefixes are <code>o</code>, <code>on</code>, and possible suffixes are <code>i</code>, <code>ni</code>, and none of them are the same, so there isn&#39;t an <code>LPS</code> in them, so we mark it as <code>0</code>;</li>
+<li>We test for <code>onio</code>, possible prefixes are <code>o</code>, <code>on</code>, <code>oni</code>, and possible suffixes are <code>o</code>, <code>io</code>, <code>nio</code>, and <code>o</code> happens to be the only substring that is both a prefix and suffix, because its length is 1, so we mark it as <code>1</code>;</li>
+<li>We test for <code>onion</code>, possible prefixes are <code>o</code>, <code>on</code>, <code>oni</code>, <code>onio</code>, and possible suffixes are  <code>n</code>, <code>on</code>, <code>ion</code>, <code>nion</code>, and there are two substrings that are both prefix and suffix: <code>o</code> and <code>on</code>, we are looking for the longest substring, <code>on</code> wins, and its length is 2, so we marked it as <code>2</code>;</li>
+<li>Finally, we test for <code>onions</code>, possible prefixes are <code>o</code>, <code>on</code>, <code>oni</code>, <code>onio</code>, <code>onion</code> and possible suffixes are <code>s</code>, <code>ns</code>, <code>ons</code>, <code>ions</code>, <code>nions</code>, and there isn&#39;t any substrings are the same. so we mark it as <code>0</code>.</li>
+</ol>
+
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p>Now we have this preprocessed array that represent the longest prefix that is also the suffix for each sequence for this pattern:</p>
+<p><strong>Pattern</strong></p>
+<p><label for="input-pat-lps">Pattern text</label>
+<input id="input-pat-lps" type="text" value="onions"/> </p>
+<pre>
+<code>longest LPS length: <span id="len-pointer"></span></code>
+</pre>
+<div id="pat-lps-array" class="array"></div>
+
+<p><strong>LPS</strong></p>
+<div id="lps-array" class="array"></div>
+
+<div>
+  <button id="btn-stepper-1">➡️Step over</button>
+</div>
+
+<script>
+  let preProcessStepper;
+  let lps;
+  const btnStepper1 = document.getElementById('btn-stepper-1');
+  const inputPatLps = document.getElementById('input-pat-lps');
+  const spanLenPointer = document.getElementById('len-pointer');
+  const resetLps = () => {
+    lps = Array(inputPatLps.value.length).fill(0);
+    spanLenPointer.innerHTML = 0;
+    vsa({
+      containerSelector: '#pat-lps-array',
+      array: Array.from(inputPatLps.value)
+    });
+    vsa({
+      containerSelector: '#lps-array',
+      array: lps
+    });
+    preProcessStepper = preProcess(lps, inputPatLps.value, true);
+  };
+  resetLps();
+  btnStepper1.addEventListener('click', () => {
+    const { value, done } = preProcessStepper.next();
+    if (!done) {
+      if (value !== undefined) {
+        const { i, len, mismatch } = value;
+        vsa({
+          containerSelector: '#pat-lps-array',
+          array: Array.from(inputPatLps.value),
+          pointers: [{ index: i, color: pink }, { index: len, color: mismatch ? red : green }],
+          highlights: [{ range: [i, i], color: mismatch ? red : green }]
+        });
+        vsa({
+          containerSelector: '#lps-array',
+          array: lps,
+          pointers: [{ index: i, color: pink }]
+        });
+        spanLenPointer.innerHTML = len;
+      }
+    } else {
+      resetLps();
+    }
+  });
+  inputPatLps.addEventListener('input', resetLps);
+</script>
+
+<p>Now, given a text <code>onionions</code> to search for the pattern, we got the matched</p>
+<div class="array" data-array="onionions" data-highlights='[{"range": [3, 8], "color": "blue"}]'></div>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p><strong>Steppers</strong></p>
+<p>We create two pointers, one for the pattern, and one for the search text:</p>
+<p><strong>Pattern</strong></p>
+<p><label for="input-pat">Pattern text</label>
+<input id="input-pat" type="text" /></p>
+<div id="pat-array" class="array"></div>
+
+<p><strong>Search text</strong></p>
+<p><label for="input-search">Search text</label>
+<input id="input-search" type="text" /></p>
+<div id="search-array" class="array"></div>
+
+<div>
+  <button id="btn-stepper-2">➡️Step over</button>
+</div>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <p>As we step over the search, when there is a match, both pointers move forward. When there is a mismatch, the search text pointer <strong>never</strong> resets, whereas the pattern pointer will look up the longest prefix that is also the suffix just before the mismatched character. Then, it will backtrack the pattern pointer to the <code>LPS</code> index of the previous matching substring sequence to skip all characters in such sequence that we know they have a match from the previous step. The intuition of how this logic works thanks to the fact that we know when the prefix of a sequence is exactly the same as its suffix, we could overlapping the matching substring of the sequence to skip the comparison. </p>
+<p>With a little help from this stepper, we could aparently observe that if we considered the entire sequence of the pattern substring as the longest proper prefix that was also the suffix, the mismatched character would have been mistakenly counted as part of the matching character before we reset the pattern pointer back to its backtracked index (<code>LPS</code> index of the previous matching substring sequence). </p>
+<script>
+  let pattern = 'onion';
+  let text = 'onionionsoni';
+  let searchStepper;
+  const inputPat = document.getElementById('input-pat');
+  const inputSearch = document.getElementById('input-search');
+  const btnNext = document.getElementById('btn-stepper-2');
+  inputPat.value = pattern;
+  inputSearch.value = text;
+  const reset = () => {
+    pattern = inputPat.value;
+    text = inputSearch.value;
+    vsa({ 
+      containerSelector: '#pat-array', 
+      array: Array.from(pattern), 
+    });
+    vsa({ 
+      containerSelector: '#search-array', 
+      array: Array.from(text),
+    });
+    searchStepper = kmpSearch(pattern, text);
+  };
+  reset();
+  inputPat.addEventListener('input', reset);
+  inputSearch.addEventListener('input', reset);
+  btnNext.addEventListener('click', () => {
+    const { value, done } = searchStepper.next();
+    if (!done) {
+      const { i, j, result, mismatch } = value;
+      const searchHighlights = [{ range: [i-j, i-1], color: green }];
+      const patternHighlights = [{ range: [0, j-1], color: green }];
+      if (mismatch) {
+        searchHighlights.push({ range: [i, i], color: red });
+        patternHighlights.push({ range: [j, j], color: red });
+      }
+      const matchedPointers = result.map(startIndex => ({ index: startIndex, color: blue }));
+      vsa({ 
+        containerSelector: '#pat-array', 
+        array: Array.from(pattern), 
+        pointers: [{ index: j , color: pink }], 
+        highlights: patternHighlights
+      });
+      vsa({ 
+        containerSelector: '#search-array', 
+        array: Array.from(text), 
+        pointers: [{ index: i , color: pink }, ...matchedPointers], 
+        highlights: searchHighlights
+      });
+    } else {
+      const { result } = value;
+      const matchedHighlights = result.map(startIndex => ({ range: [startIndex, startIndex + pattern.length - 1], color: blue }));
+      const matchedPointers = result.map(startIndex => ({ index: startIndex, color: pink }));
+      vsa({ 
+        containerSelector: '#pat-array', 
+        array: Array.from(pattern), 
+      });
+      vsa({ 
+        containerSelector: '#search-array', 
+        array: Array.from(text), 
+        highlights: matchedHighlights,
+        pointers: matchedPointers
+      });
+      // reset generator
+      searchStepper = kmpSearch(pattern, text);
+    }
+  });
+</script>
+
+<script>
+  vsa({ containerSelector: '.array' });
+</script>
+</div>
+<div class="slide">
+    <div class="slide-controls">
+        <button class="controls controls-prev">Previous</button>
+        <button class="controls controls-next">Next</button>
+    </div>
+    <h2>
+  <a id="visualization" class="anchor" aria-hidden="true" href="#visualization">
+    <svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg>
+  </a>Visualization</h2><p>Once we have the array that indicates the starting index of each match, we could build the node sequence that represent the plain text and the highlighted text:</p>
+<div class="codeblock">
+  <pre class="language-js"><span class="token keyword">const</span> nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token comment">// i to track the start of the plain text</span>
+<span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token comment">// j to track the start of the highlight, in other words, the end of plain text</span>
+<span class="token keyword">let</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> children<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> j <span class="token operator">&lt;</span> matched<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> matchingStartingIndex <span class="token operator">=</span> matched<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> matchingEndingIndexExclusive <span class="token operator">=</span> matched<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> match<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token comment">// plain text range [i, j)</span>
+    <span class="token keyword">const</span> plainText <span class="token operator">=</span> children<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> matchingStartingIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// highlight text range [m[j], m[j] + len(pattern))</span>
+    <span class="token keyword">const</span> highlight <span class="token operator">=</span> children<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>matchingStartingIndex<span class="token punctuation">,</span> matchingEndingIndexExclusive<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    nodes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>plainText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    nodes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>span <span class="token keyword">class</span><span class="token operator">=</span><span class="token punctuation">{</span>style<span class="token punctuation">.</span>textHighlight<span class="token punctuation">}</span><span class="token operator">></span><span class="token punctuation">{</span>highlight<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// move i to the letter after j's matching pattern</span>
+    i <span class="token operator">=</span> matchingEndingIndexExclusive<span class="token punctuation">;</span>
+    <span class="token comment">// moveup j to read the next matching starting index</span>
+    j<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// tailing plain text</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">&lt;</span> children<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    nodes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>children<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></pre>  
+</div>
+</div>
+<p><style>
+    .slide:fullscreen {
+        width: 100%;
+        height: 100%;
+        background-color: wheat;
+        padding: 100px;
+        font-size: 32px;
+    }
+    .slide:not(:fullscreen) .slide-controls {
+        display: none;
+    }
+
+    .slide:fullscreen .slide-controls {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+    }
+</style>
+<button title="This article has a presentation mode, click to start, press ESC key to exit" id="presentation">
+🖼️ Presentation Mode
+</button>
+<script>
+(function() {
+  const btnPresentation = document.getElementById('presentation');
+  const btnPrev = [...document.querySelectorAll('.controls-prev')];
+  const btnNext = [...document.querySelectorAll('.controls-next')];
+  const slides = [...document.querySelectorAll('.slide')];
+   let currentSlideIndex = 0;
+  btnPresentation.addEventListener('click', () => {
+    currentSlideIndex = 0;
+    slides[currentSlideIndex].requestFullscreen();
+  });
+  btnPrev.forEach(btn => btn.addEventListener('click', prev))
+  btnNext.forEach(btn => btn.addEventListener('click', next))
+   document.addEventListener('keydown', e => {
+    if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('slide')) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+    }
+  });
+   function next() {
+    currentSlideIndex = currentSlideIndex === slides.length - 1 ? currentSlideIndex : currentSlideIndex + 1;
+    slides[currentSlideIndex].requestFullscreen();
+  }
+   function prev() {
+    currentSlideIndex = currentSlideIndex === 0 ? 0 : currentSlideIndex - 1;
+    slides[currentSlideIndex].requestFullscreen();
+  }
+})();
+</script>
+</p>
+</article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2021/09/efficient-text-highlighter/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
+  <script type="module" src="/index.3f0829f1.js"></script>
+</body>
+</html>
+

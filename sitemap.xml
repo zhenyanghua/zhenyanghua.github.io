@@ -13,6 +13,9 @@
   <loc>https://zhenyanghua.github.io/writings/2</loc>
 </url>
 <url>
+  <loc>https://zhenyanghua.github.io/2021/09/efficient-text-highlighter</loc>
+</url>
+<url>
   <loc>https://zhenyanghua.github.io/2021/09/implement-the-lightning-algorithm</loc>
 </url>
 <url>
@@ -40,10 +43,10 @@
   <loc>https://zhenyanghua.github.io/2019/01/recursively-move-a-directory</loc>
 </url>
 <url>
-  <loc>https://zhenyanghua.github.io/2019/01/creating-a-library-project-for-spring-boot</loc>
+  <loc>https://zhenyanghua.github.io/writings/5</loc>
 </url>
 <url>
-  <loc>https://zhenyanghua.github.io/writings/5</loc>
+  <loc>https://zhenyanghua.github.io/2018/04/dependency-injection-and-inversion-of-control</loc>
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/2018/04/spring-data-substitutes-objectmapper</loc>
@@ -53,6 +56,9 @@
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/writings/3</loc>
+</url>
+<url>
+  <loc>https://zhenyanghua.github.io/2019/01/creating-a-library-project-for-spring-boot</loc>
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/2018/12/wrap-a-command-with-builder-pattern</loc>
@@ -82,10 +88,10 @@
   <loc>https://zhenyanghua.github.io/2018/11/pass-parameters-to-the-executiveservice-adapter</loc>
 </url>
 <url>
-  <loc>https://zhenyanghua.github.io/2018/11/docker-useful-commands</loc>
+  <loc>https://zhenyanghua.github.io/writings/4</loc>
 </url>
 <url>
-  <loc>https://zhenyanghua.github.io/writings/4</loc>
+  <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-state-pattern-exercise</loc>
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-memento-pattern-exercise</loc>
@@ -115,7 +121,7 @@
   <loc>https://zhenyanghua.github.io/2018/05/spring-transactional-isolation-level</loc>
 </url>
 <url>
-  <loc>https://zhenyanghua.github.io/2018/04/dependency-injection-and-inversion-of-control</loc>
+  <loc>https://zhenyanghua.github.io/2018/11/docker-useful-commands</loc>
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/2018/10/overwriting-spring-security-context-through-filter</loc>
@@ -173,8 +179,5 @@
 </url>
 <url>
   <loc>https://zhenyanghua.github.io/2018/07/behavioral-patterns-strategy-pattern-exercise</loc>
-</url>
-<url>
-  <loc>https://zhenyanghua.github.io/2018/06/behavioral-patterns-state-pattern-exercise</loc>
 </url>
 </urlset>
