@@ -181,6 +181,8 @@ When I built the search blog post feature of this site, there is a nice visual e
   window.preProcess = preProcess;
 </script>
 
+!---
+
 ## Regex Positive Lookahead
 
 When search for pattern matching, it is possible to have overlapping characters that could be a potential match. For example, in the 
@@ -193,21 +195,33 @@ When search for pattern matching, it is possible to have overlapping characters 
 
 <div class="array" data-array="onionionions"></div>
 
+!---
+
+!---
+
 A regex like this `/onion/gi` will only result in two matches:
 
 <div class="array" data-array="onionionions" 
   data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
   data-pointers='[{ "index": 0, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
 
-We could tell there is an overlapping occurrence missing from these matches, to match such occurences, we need to ask regex to look ahead of each character before moving on to the next character, similar to the brute force approach from the next section. This technique is called **Positive Lookahead** in regex, and the expression is `(?=...)`. It asserts that the given subpattern can be matched here, without consuming characters. Now we update the regex to be `/(?=onion)/`, we will be getting the three matches including the overlapping one.
+!---
+
+!---
+
+We could tell there is an overlapping occurrence missing from these matches, to match such occurences, we need to ask regex to look ahead of each character before moving on to the next character, similarly to the brute force approach from the next section. This technique is called **Positive Lookahead** in regex, and the expression is `(?=...)`. It asserts that the given subpattern can be matched here, without consuming characters. Now we update the regex to be `/(?=onion)/`, we will be getting three matches including the overlapping one.
 
 <div class="array" data-array="onionionions" 
   data-highlights='[{ "range": [0, 4], "color": "blue" }, { "range": [3, 7], "color": "blue" }, { "range": [6, 10], "color": "blue" }]' 
   data-pointers='[{ "index": 0, "color": "pink" }, { "index": 3, "color": "pink" }, { "index": 6, "color": "pink" }]'></div>
 
+!---
+
+!---
+
 ## Brute force pattern matching
 
-The brute force approach is to examine the each following sequence matches the pattern characters for each character in the search text. 
+The brute force approach is to examine whether the following sequence matches the pattern characters for each character in the search text. 
 
 <label for="input-pat-naive">Pattern text</label>
 <input id="input-pat-naive" type="text" value="onions"/> 
@@ -309,11 +323,19 @@ function* searchNaive(pattern, text) {
 }
 </script>
 
+!---
+
+!---
+
 ## Knuth-Morris-Pratt text search algorithm
 
 The above brute force algorithm in the worst case scenario, will run a comparison as long as the pattern string for every character in the search text, which has a time complexity of `O(N * M)` where `N` is the length of the search text, and `M` is the length of the pattern. KMP search algorithm elegantly utilizes the previous matching result and never moves the search cursor back and also skipped all the previous matched character for the next comparison. The essense here is to take advantage of the character sequence that are the prefix of the pattern also being the suffix of the pattern. Because of this, we could skip the comparison of the substring of the pattern that are both prefix and suffix of it, this way, given `M` << `N`, for text matching where overlapping match may happen often, the times we need to reset the pattern search cursor is greatly reduced. 
 
 To have the information of the character sequence that are both prefix and suffix of the pattern, we need to preprocess the pattern string so that we know the longest prefix that is also the suffix for each character. For now, let's assume such sequence doesn't include the entire sequence itself, and we will come back to it in a moment with an example to explain why we shouldn't consider the entire sequence itself as the longest prefix that is also the suffix. Sometimes people call such sequence - `LPS`, which stands for the longest proper prefix that is also the suffix in a given sequence. 
+
+!---
+
+!---
 
 For example:
 
@@ -327,6 +349,10 @@ To preprocess the pattern `onions`,
 4. We test for `onio`, possible prefixes are `o`, `on`, `oni`, and possible suffixes are `o`, `io`, `nio`, and `o` happens to be the only substring that is both a prefix and suffix, because its length is 1, so we mark it as `1`;
 5. We test for `onion`, possible prefixes are `o`, `on`, `oni`, `onio`, and possible suffixes are  `n`, `on`, `ion`, `nion`, and there are two substrings that are both prefix and suffix: `o` and `on`, we are looking for the longest substring, `on` wins, and its length is 2, so we marked it as `2`;
 6. Finally, we test for `onions`, possible prefixes are `o`, `on`, `oni`, `onio`, `onion` and possible suffixes are `s`, `ns`, `ons`, `ions`, `nions`, and there isn't any substrings are the same. so we mark it as `0`.
+
+!---
+
+!---
 
 Now we have this preprocessed array that represent the longest prefix that is also the suffix for each sequence for this pattern:
 
@@ -396,6 +422,10 @@ Now, given a text `onionions` to search for the pattern, we got the matched
 
 <div class="array" data-array="onionions" data-highlights='[{"range": [3, 8], "color": "blue"}]'></div>
 
+!---
+
+!---
+
 **Steppers**
 
 We create two pointers, one for the pattern, and one for the search text:
@@ -418,9 +448,13 @@ We create two pointers, one for the pattern, and one for the search text:
   <button id="btn-stepper-2">➡️Step over</button>
 </div>
 
-As we step over the search, when there is a match, both pointers move forward. When there is a mismatch, the search text pointer **never** reset, whereas the pattern pointer will look up for the longest prefix that is also the suffix just before the mismatched character. Then, it will backtrack the pattern pointer to the `LPS` index of the previous matching substring sequence to skip all characters in such sequence that we know they have a match from the previous step. The intuition of how this logic works thanks to we know if the prefix of a sequence is exactly the same as its suffix, we could overlapping the matching substring of the sequence to skip the comparison. 
+!---
 
-With a little help from this stepper, we could aparently observe that if we considered the entire sequence of the pattern substring as the longest proper prefix that is also the suffix, the mismatched character would have been mistakenly counted as part of the matching character before we reset the pattern pointer back to its backtracked index (`LPS` index of the previous matching substring sequence). 
+!---
+
+As we step over the search, when there is a match, both pointers move forward. When there is a mismatch, the search text pointer **never** resets, whereas the pattern pointer will look up the longest prefix that is also the suffix just before the mismatched character. Then, it will backtrack the pattern pointer to the `LPS` index of the previous matching substring sequence to skip all characters in such sequence that we know they have a match from the previous step. The intuition of how this logic works thanks to the fact that we know when the prefix of a sequence is exactly the same as its suffix, we could overlapping the matching substring of the sequence to skip the comparison. 
+
+With a little help from this stepper, we could aparently observe that if we considered the entire sequence of the pattern substring as the longest proper prefix that was also the suffix, the mismatched character would have been mistakenly counted as part of the matching character before we reset the pattern pointer back to its backtracked index (`LPS` index of the previous matching substring sequence). 
 
 <script>
   let pattern = 'onion';
@@ -494,6 +528,10 @@ With a little help from this stepper, we could aparently observe that if we cons
   vsa({ containerSelector: '.array' });
 </script>
 
+!---
+
+!---
+
 ## Visualization
 
 Once we have the array that indicates the starting index of each match, we could build the node sequence that represent the plain text and the highlighted text:
@@ -525,3 +563,7 @@ if(i < children.length) {
     nodes.push(children.substring(i));
 }
 ```
+
+!---
+
+!--!
