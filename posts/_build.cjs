@@ -226,7 +226,7 @@ years.forEach(year => {
       const excerptSeparator = '<!-- Excerpt End -->';
       const { data, content, excerpt } = matter(mdFile, { excerpt_separator: excerptSeparator });
       const contentWithoutExcerpt = content.substring(excerpt.length + excerptSeparator.length);
-      const summary = marked(excerpt).replace(/`/g, '\\`');
+      const summary = marked(excerpt).replace(/`/g, '\\`').trim();
       const html = marked(contentWithoutExcerpt).replace(/`/g, '\\`');
       const scripts = Array.from(html.matchAll(/<script[\s\S]*?>([\s\S]*?)<\/script>/gi)).map(x => x[1].trim());
       // todo - optimization - transpile each script to es5 and bundle using babel and a bundler?
