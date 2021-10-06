@@ -16,7 +16,7 @@
 <title>Implement the Lightning Algorithm - Zhenyang Hua</title>
   <link rel="stylesheet" href="/assets/global.0c899d99.css">
 <link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(222, 206, 77);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Implement the Lightning Algorithm</h1><p class="date_14b9dxr">Posted on 09/15/2021</p><div class="summary_14b9dxr"><p>I was entertaining myself with the excellent video interviews from the Numberphile project, a lightning algorithm interview from the creator of the visualization of the algorithm clearly explained the techniques used behind the scene. The explanation was so clear and the visualization was so satisfying that I felt impetuous to implement it. A few hours later, the moment of thought became realized. Here sharing a few steps that I learned from the interview and while implementing it. </p>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(21, 241, 203);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Implement the Lightning Algorithm</h1><p class="date_14b9dxr">Posted on 09/15/2021</p><div class="summary_14b9dxr"><p>I was entertaining myself with the excellent video interviews from the Numberphile project, a lightning algorithm interview from the creator of the visualization of the algorithm clearly explained the techniques used behind the scene. The explanation was so clear and the visualization was so satisfying that I felt impetuous to implement it. A few hours later, the moment of thought became realized. Here sharing a few steps that I learned from the interview and while implementing it. </p>
 </div><article><style>
     .slide:fullscreen .flex {
         display: flex;
@@ -31,6 +31,7 @@
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="the-demo" class="anchor" aria-hidden="true" href="#the-demo">
@@ -469,6 +470,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="generate-a-maze" class="anchor" aria-hidden="true" href="#generate-a-maze">
@@ -481,6 +483,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>We will then create walls in the grid. The lightning algorithm is to mimic how a lightning strike travels - from top to bottom. To make sure in most of the time, our maze provides a path from top to bottom, horizontal walls should be fewer than the vertical walls. To get there, we need to create a utility function to control the probability interval.</p>
 <div class="codeblock">
@@ -503,6 +506,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="solve-a-maze" class="anchor" aria-hidden="true" href="#solve-a-maze">
@@ -515,6 +519,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>Finally we backtrack the path:</p>
 <div class="flex">
@@ -527,6 +532,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="animate-it" class="anchor" aria-hidden="true" href="#animate-it">
@@ -542,6 +548,7 @@ function warn() {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="lightning-algorithm-video-interview" class="anchor" aria-hidden="true" href="#lightning-algorithm-video-interview">
@@ -550,6 +557,9 @@ function warn() {
 
 </div>
 <p><style>
+    .slide:not(:fullscreen) {
+      position: relative;
+    }
     .slide:fullscreen {
         width: 100%;
         height: 100%;
@@ -575,33 +585,47 @@ function warn() {
   const btnPresentation = document.getElementById('presentation');
   const btnPrev = [...document.querySelectorAll('.controls-prev')];
   const btnNext = [...document.querySelectorAll('.controls-next')];
+  const btnExit = [...document.querySelectorAll('.controls-exit')];
   const slides = [...document.querySelectorAll('.slide')];
    let currentSlideIndex = 0;
   btnPresentation.addEventListener('click', () => {
-    currentSlideIndex = 0;
-    slides[currentSlideIndex].requestFullscreen();
+    if (!document.fullscreenElement) {
+      currentSlideIndex = 0;
+      slides[currentSlideIndex].requestFullscreen();
+    }
   });
   btnPrev.forEach(btn => btn.addEventListener('click', prev))
   btnNext.forEach(btn => btn.addEventListener('click', next))
-   document.addEventListener('keydown', e => {
+  btnExit.forEach(btn => btn.addEventListener('click', exit))
+   document.addEventListener('keydown', async e => {
     if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('slide')) {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();              
+    }
+  });
+   document.addEventListener('fullscreenchange', (event) => {
+    if (!document.fullscreenElement) {
+      location.reload();
     }
   });
    function next() {
     currentSlideIndex = currentSlideIndex === slides.length - 1 ? currentSlideIndex : currentSlideIndex + 1;
-    slides[currentSlideIndex].requestFullscreen();
+    slides[currentSlideIndex].requestFullscreen()
   }
    function prev() {
     currentSlideIndex = currentSlideIndex === 0 ? 0 : currentSlideIndex - 1;
-    slides[currentSlideIndex].requestFullscreen();
+    slides[currentSlideIndex].requestFullscreen()
+  }
+   async function exit() {
+    while (document.fullscreenElement) {
+      await document.exitFullscreen();
+    }
   }
 })();
 </script>
 </p>
 </article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2021/09/implement-the-lightning-algorithm/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.cadba497.js"></script>
+  <script type="module" src="/index.34c4701d.js"></script>
 </body>
 </html>
 

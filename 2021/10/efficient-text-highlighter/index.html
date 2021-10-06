@@ -16,7 +16,7 @@
 <title>Efficient Text Highlighter - Zhenyang Hua</title>
   <link rel="stylesheet" href="/assets/global.0c899d99.css">
 <link rel="stylesheet" href="/assets/style.module.184703f0.css"></head>
-<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(47, 246, 211);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Efficient Text Highlighter</h1><p class="date_14b9dxr">Posted on 10/02/2021</p><div class="summary_14b9dxr"><p>When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex positive lookahead, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. </p>
+<body><div id="contentcontainer" class="shadow"><div class="host_1vq48fc" style="background-color: rgb(93, 235, 190);"><header><div class="host_1q8y6om"><a href="#maincontent">skip to main content</a></div><div class="host_216t9o"><h2 class="title_216t9o"><a href="/">Zhenyang Hua</a></h2></div><div class="host_m2uvri"><nav><h2 class="hidden">Main Navigation</h2><ul><li><a href="/" class="link_m2uvri">Tools</a></li><li><a href="/writings/1" class="link_m2uvri">Writings</a></li></ul></nav></div><div class="host_1c336ft"><span>This is a space that holds a collection of my personal work and ideas</span></div></header></div><main id="maincontent"><div class="post_14b9dxr"><h1 class="title_14b9dxr">Efficient Text Highlighter</h1><p class="date_14b9dxr">Posted on 10/02/2021</p><div class="summary_14b9dxr"><p>When I built the search blog post feature of this site, there is a nice visual enhancement called text highlighter as part of the search component. I implemented the same feature with three different approaches, regex positive lookahead, brute force pattern matching, and finally a more efficient approach with Knuth-Morris-Pratt (KMP) text search algorithm. In this post, I will show all three approaches to implement this feature with some interactive visualization to hopefully help a few people see the joy of programming while applying some common algorithms to a practical use case. </p>
 </div><article><style>
     .center {
       display: flex;
@@ -197,6 +197,7 @@
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="regex-positive-lookahead" class="anchor" aria-hidden="true" href="#regex-positive-lookahead">
@@ -212,6 +213,7 @@
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>A regex like this <code>/onion/gi</code> will only result in two matches:</p>
 <div class="array" data-array="onionionions" 
@@ -222,6 +224,7 @@
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>We could tell there is an overlapping occurrence missing from these matches, to match such occurences, we need to ask regex to look ahead of each character before moving on to the next character, similarly to the brute force approach from the next section. This technique is called <strong>Positive Lookahead</strong> in regex, and the expression is <code>(?=...)</code>. It asserts that the given subpattern can be matched here, without consuming characters. Now we update the regex to be <code>/(?=onion)/</code>, we will be getting three matches including the overlapping one.</p>
 <div class="array" data-array="onionionions" 
@@ -232,6 +235,7 @@
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="brute-force-pattern-matching" class="anchor" aria-hidden="true" href="#brute-force-pattern-matching">
@@ -341,6 +345,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="knuth-morris-pratt-text-search-algorithm" class="anchor" aria-hidden="true" href="#knuth-morris-pratt-text-search-algorithm">
@@ -353,6 +358,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>For example:</p>
 <div class="array" data-array="onions"></div>
@@ -372,6 +378,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>Now we have this preprocessed array that represent the longest prefix that is also the suffix for each sequence for this pattern:</p>
 <p><strong>Pattern</strong></p>
@@ -441,6 +448,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p><strong>Steppers</strong></p>
 <p>We create two pointers, one for the pattern, and one for the search text:</p>
@@ -462,6 +470,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <p>As we step over the search, when there is a match, both pointers move forward. When there is a mismatch, the search text pointer <strong>never</strong> resets, whereas the pattern pointer will look up the longest prefix that is also the suffix just before the mismatched character. Then, it will backtrack the pattern pointer to the <code>LPS</code> index of the previous matching substring sequence to skip all characters in such sequence that we know they have a match from the previous step. The intuition of how this logic works thanks to the fact that we know when the prefix of a sequence is exactly the same as its suffix, we could overlapping the matching substring of the sequence to skip the comparison. </p>
 <p>With a little help from this stepper, we could aparently observe that if we considered the entire sequence of the pattern substring as the longest proper prefix that was also the suffix, the mismatched character would have been mistakenly counted as part of the matching character before we reset the pattern pointer back to its backtracked index (<code>LPS</code> index of the previous matching substring sequence). </p>
@@ -541,6 +550,7 @@ function* searchNaive(pattern, text) {
     <div class="slide-controls">
         <button class="controls controls-prev">Previous</button>
         <button class="controls controls-next">Next</button>
+        <button class="controls controls-exit">Exit</button>
     </div>
     <h2>
   <a id="visualization" class="anchor" aria-hidden="true" href="#visualization">
@@ -575,6 +585,9 @@ function* searchNaive(pattern, text) {
 </div>
 </div>
 <p><style>
+    .slide:not(:fullscreen) {
+      position: relative;
+    }
     .slide:fullscreen {
         width: 100%;
         height: 100%;
@@ -600,33 +613,47 @@ function* searchNaive(pattern, text) {
   const btnPresentation = document.getElementById('presentation');
   const btnPrev = [...document.querySelectorAll('.controls-prev')];
   const btnNext = [...document.querySelectorAll('.controls-next')];
+  const btnExit = [...document.querySelectorAll('.controls-exit')];
   const slides = [...document.querySelectorAll('.slide')];
    let currentSlideIndex = 0;
   btnPresentation.addEventListener('click', () => {
-    currentSlideIndex = 0;
-    slides[currentSlideIndex].requestFullscreen();
+    if (!document.fullscreenElement) {
+      currentSlideIndex = 0;
+      slides[currentSlideIndex].requestFullscreen();
+    }
   });
   btnPrev.forEach(btn => btn.addEventListener('click', prev))
   btnNext.forEach(btn => btn.addEventListener('click', next))
-   document.addEventListener('keydown', e => {
+  btnExit.forEach(btn => btn.addEventListener('click', exit))
+   document.addEventListener('keydown', async e => {
     if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('slide')) {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();              
+    }
+  });
+   document.addEventListener('fullscreenchange', (event) => {
+    if (!document.fullscreenElement) {
+      location.reload();
     }
   });
    function next() {
     currentSlideIndex = currentSlideIndex === slides.length - 1 ? currentSlideIndex : currentSlideIndex + 1;
-    slides[currentSlideIndex].requestFullscreen();
+    slides[currentSlideIndex].requestFullscreen()
   }
    function prev() {
     currentSlideIndex = currentSlideIndex === 0 ? 0 : currentSlideIndex - 1;
-    slides[currentSlideIndex].requestFullscreen();
+    slides[currentSlideIndex].requestFullscreen()
+  }
+   async function exit() {
+    while (document.fullscreenElement) {
+      await document.exitFullscreen();
+    }
   }
 })();
 </script>
 </p>
 </article><h2 class="github_14b9dxr"><a target="_blank" href="https://github.com/zhenyanghua/zhenyanghua.github.io/blob/master/posts/2021/10/efficient-text-highlighter/index.md">Read on GitHub</a></h2></div></main></div><script type="isodata"></script>
-  <script type="module" src="/index.cadba497.js"></script>
+  <script type="module" src="/index.34c4701d.js"></script>
 </body>
 </html>
 
