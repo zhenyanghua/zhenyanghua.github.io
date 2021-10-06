@@ -53,6 +53,7 @@ const slide = {
               <div class="slide-controls">
                   <button class="controls controls-prev">Previous</button>
                   <button class="controls controls-next">Next</button>
+                  <button class="controls controls-exit">Exit</button>
               </div>
               ${this.parser.parse(token.tokens)}
           </div>
@@ -84,6 +85,9 @@ const presentation = {
   renderer(token) {
       return indent`
           <style>
+              .slide:not(:fullscreen) {
+                position: relative;
+              }
               .slide:fullscreen {
                   width: 100%;
                   height: 100%;
@@ -109,31 +113,47 @@ const presentation = {
             const btnPresentation = document.getElementById('presentation');
             const btnPrev = [...document.querySelectorAll('.controls-prev')];
             const btnNext = [...document.querySelectorAll('.controls-next')];
+            const btnExit = [...document.querySelectorAll('.controls-exit')];
             const slides = [...document.querySelectorAll('.slide')];
 
             let currentSlideIndex = 0;
             btnPresentation.addEventListener('click', () => {
-              currentSlideIndex = 0;
-              slides[currentSlideIndex].requestFullscreen();
+              if (!document.fullscreenElement) {
+                currentSlideIndex = 0;
+                slides[currentSlideIndex].requestFullscreen();
+              }
             });
             btnPrev.forEach(btn => btn.addEventListener('click', prev))
             btnNext.forEach(btn => btn.addEventListener('click', next))
+            btnExit.forEach(btn => btn.addEventListener('click', exit))
 
-            document.addEventListener('keydown', e => {
+            document.addEventListener('keydown', async e => {
               if (document.fullscreenElement && [...document.fullscreenElement.classList].includes('slide')) {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
-                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();              
+              }
+            });
+
+            document.addEventListener('fullscreenchange', (event) => {
+              if (!document.fullscreenElement) {
+                location.reload();
               }
             });
 
             function next() {
               currentSlideIndex = currentSlideIndex === slides.length - 1 ? currentSlideIndex : currentSlideIndex + 1;
-              slides[currentSlideIndex].requestFullscreen();
+              slides[currentSlideIndex].requestFullscreen()
             }
 
             function prev() {
               currentSlideIndex = currentSlideIndex === 0 ? 0 : currentSlideIndex - 1;
-              slides[currentSlideIndex].requestFullscreen();
+              slides[currentSlideIndex].requestFullscreen()
+            }
+
+            async function exit() {
+              while (document.fullscreenElement) {
+                await document.exitFullscreen();
+              }
             }
           })();
           </script>
