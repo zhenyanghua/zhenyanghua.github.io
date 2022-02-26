@@ -21,7 +21,7 @@
     "gray-matter": "^4.0.2",
     "jest": "^27.2.3",
     "marked": "^3.0.4",
-    "prismjs": "^1.25.0",
+    "prismjs": "^1.27.0",
     "wmr": "^1.0.0"
   },
   "dependencies": {
