@@ -6,7 +6,7 @@ import MapPlaceholder from "../MapPlaceholder";
 const gmapsApiKey = 'AIzaSyBTdH3AFSWLD3SrgbNqTGoRsg3U6W0qAAg';
 
 const htmlText = `<!-- html -->
-<script src="https://unpkg.com/measuretool-googlemaps-v3"></script>
+<script src="https://unpkg.com/measuretool-googlemaps-v3@1.0.2/dist/gmaps-measuretool.umd.js"></script>
 `;
 
 const codeText = `
@@ -92,7 +92,7 @@ export default function Measure() {
     const isApiLoaded = Array.from(document.head.querySelectorAll('script')).some(x => x.src.includes(gmapsApiKey));
     if (!isApiLoaded) {
       await injectScript(`https://maps.googleapis.com/maps/api/js?key=${gmapsApiKey}&libraries=geometry`);
-      await injectScript(`https://unpkg.com/measuretool-googlemaps-v3`);
+      await injectScript(`https://unpkg.com/measuretool-googlemaps-v3@1.0.2/dist/gmaps-measuretool.umd.js`);
     }
 
     const map = new window.google.maps.Map(mapRef.current, {
